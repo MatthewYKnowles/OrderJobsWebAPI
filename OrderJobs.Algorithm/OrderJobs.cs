@@ -10,18 +10,18 @@ namespace OrderJobs.Algorithm
     {
         private readonly string _jobs;
 
-        public OrderJobs(string Jobs)
+        public OrderJobs(string jobs)
         {
-            _jobs = Jobs;
+            _jobs = jobs;
         }
 
         public string Order()
         {
-            if (_jobs === "")
+            if (_jobs == "")
             {
                 return "";
             }
-            return "a";
+            return _jobs[0].ToString();
         }
     }
 }
