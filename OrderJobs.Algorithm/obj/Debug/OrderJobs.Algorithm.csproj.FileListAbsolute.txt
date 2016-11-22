@@ -1,0 +1,4 @@
+c:\users\matthew\documents\visual studio 2015\Projects\OrderJobsWebAPI\OrderJobs.Algorithm\bin\Debug\OrderJobs.Algorithm.dll
+c:\users\matthew\documents\visual studio 2015\Projects\OrderJobsWebAPI\OrderJobs.Algorithm\bin\Debug\OrderJobs.Algorithm.pdb
+c:\users\matthew\documents\visual studio 2015\Projects\OrderJobsWebAPI\OrderJobs.Algorithm\obj\Debug\OrderJobs.Algorithm.dll
+c:\users\matthew\documents\visual studio 2015\Projects\OrderJobsWebAPI\OrderJobs.Algorithm\obj\Debug\OrderJobs.Algorithm.pdb
