@@ -17,7 +17,11 @@ namespace OrderJobs.Algorithm
 
         public string Order()
         {
-            return "";
+            if (_jobs === "")
+            {
+                return "";
+            }
+            return "a";
         }
     }
 }

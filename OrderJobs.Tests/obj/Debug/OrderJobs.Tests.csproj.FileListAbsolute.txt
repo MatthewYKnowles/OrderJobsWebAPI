@@ -7,3 +7,12 @@ c:\users\matthew\documents\visual studio 2015\Projects\OrderJobsWebAPI\OrderJobs
 c:\users\matthew\documents\visual studio 2015\Projects\OrderJobsWebAPI\OrderJobs.Tests\obj\Debug\OrderJobs.Tests.csprojResolveAssemblyReference.cache
 c:\users\matthew\documents\visual studio 2015\Projects\OrderJobsWebAPI\OrderJobs.Tests\obj\Debug\OrderJobs.Tests.dll
 c:\users\matthew\documents\visual studio 2015\Projects\OrderJobsWebAPI\OrderJobs.Tests\obj\Debug\OrderJobs.Tests.pdb
+D:\Code\OrderJobsWebAPI\OrderJobs.Tests\bin\Debug\OrderJobs.Tests.dll
+D:\Code\OrderJobsWebAPI\OrderJobs.Tests\bin\Debug\OrderJobs.Tests.pdb
+D:\Code\OrderJobsWebAPI\OrderJobs.Tests\bin\Debug\nunit.framework.dll
+D:\Code\OrderJobsWebAPI\OrderJobs.Tests\bin\Debug\OrderJobs.Algorithm.dll
+D:\Code\OrderJobsWebAPI\OrderJobs.Tests\bin\Debug\OrderJobs.Algorithm.pdb
+D:\Code\OrderJobsWebAPI\OrderJobs.Tests\bin\Debug\nunit.framework.xml
+D:\Code\OrderJobsWebAPI\OrderJobs.Tests\obj\Debug\OrderJobs.Tests.csprojResolveAssemblyReference.cache
+D:\Code\OrderJobsWebAPI\OrderJobs.Tests\obj\Debug\OrderJobs.Tests.dll
+D:\Code\OrderJobsWebAPI\OrderJobs.Tests\obj\Debug\OrderJobs.Tests.pdb
