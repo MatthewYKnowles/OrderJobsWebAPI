@@ -8,28 +8,29 @@ namespace OrderJobs.Algorithm
     public class SequenceJobs
     {
         private readonly string[] _splitJobs;
-        private bool _noJobs;
+        private bool _hasJobs;
 
         public SequenceJobs(string jobs)
         {
-            if (jobs == "")
-            {
-                _noJobs = true;
-            }
+            _hasJobs = jobs != "";
             _splitJobs = jobs.Split('\n');
         }
 
         public string GetJobSequence()
         {
-            if (_noJobs)
-            {
-                return "";
-            }
+            return _hasJobs ? OrderJobs(): "";
+        }
+
+        private string OrderJobs()
+        {
+            string jobs = "";
+            jobs += _splitJobs[0][0].ToString();
+
             if (_splitJobs.Length > 1)
             {
-                return "ab";
+                jobs += _splitJobs[1][0].ToString();
             }
-            return "a";
+            return jobs;
         }
     }
 }
