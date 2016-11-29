@@ -13,15 +13,21 @@ namespace OrderJobs.Test
         [Test]
         public void EmptyStringTest()
         {
-            var sequenceJobs = new SequenceJobs();
-            Assert.That(sequenceJobs.Sequence(""), Is.EqualTo(""));
+            var sequenceJobs = new SequenceJobs("");
+            Assert.That(sequenceJobs.GetJobSequence(), Is.EqualTo(""));
         }
 
         [Test]
         public void OneJobNoDependency()
         {
-            var sequenceJobs = new SequenceJobs();
-            Assert.That(sequenceJobs.Sequence("a-"), Is.EqualTo("a"));
+            var sequenceJobs = new SequenceJobs("a-");
+            Assert.That(sequenceJobs.GetJobSequence(), Is.EqualTo("a"));
+        }
+        [Test]
+        public void TwoJobsNoDependencies()
+        {
+            var sequenceJobs = new SequenceJobs("a-\nb-");
+            Assert.That(sequenceJobs.GetJobSequence(), Is.EqualTo("ab"));
         }
     }
 }

@@ -1,5 +1,5 @@
---temp-output:C:\Users\matthew\Desktop\OrderJobs.Web\src\OrderJobs.Web\obj\Debug\netcoreapp1.0\
---out:C:\Users\matthew\Desktop\OrderJobs.Web\src\OrderJobs.Web\bin\Debug\netcoreapp1.0\OrderJobs.Web.dll
+--temp-output:C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\obj\Debug\netcoreapp1.0\
+--out:C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\bin\Debug\netcoreapp1.0\OrderJobs.Web.dll
 --define:DEBUG
 --define:TRACE
 --define:NETCOREAPP1_0
@@ -168,8 +168,8 @@
 --reference:C:\Users\matthew\.nuget\packages\System.Threading.Timer\4.0.1\ref\netstandard1.2\System.Threading.Timer.dll
 --reference:C:\Users\matthew\.nuget\packages\System.Xml.ReaderWriter\4.0.11\ref\netstandard1.3\System.Xml.ReaderWriter.dll
 --reference:C:\Users\matthew\.nuget\packages\System.Xml.XDocument\4.0.11\ref\netstandard1.3\System.Xml.XDocument.dll
---reference:C:\Users\matthew\Desktop\OrderJobs.Web\src\OrderJobs.Algorithm\bin\Debug\netstandard1.6\OrderJobs.Algorithm.dll
---resource:"C:\Users\matthew\Desktop\OrderJobs.Web\src\OrderJobs.Web\obj\Debug\netcoreapp1.0\OrderJobs.Webdotnet-compile.deps.json",OrderJobs.Web.deps.json
-C:\Users\matthew\Desktop\OrderJobs.Web\src\OrderJobs.Web\Program.cs
-C:\Users\matthew\Desktop\OrderJobs.Web\src\OrderJobs.Web\Startup.cs
-C:\Users\matthew\Desktop\OrderJobs.Web\src\OrderJobs.Web\Controllers\ValuesController.cs
+--reference:C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Algorithm\bin\Debug\netstandard1.6\OrderJobs.Algorithm.dll
+--resource:"C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\obj\Debug\netcoreapp1.0\OrderJobs.Webdotnet-compile.deps.json",OrderJobs.Web.deps.json
+C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\Program.cs
+C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\Startup.cs
+C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\Controllers\ValuesController.cs

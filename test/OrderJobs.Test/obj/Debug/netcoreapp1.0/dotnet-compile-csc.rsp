@@ -8,8 +8,8 @@
 -debug:full
 -nostdlib
 -nologo
-"C:\Users\matthew\Desktop\OrderJobs.Web\test\OrderJobs.Test\obj\Debug\netcoreapp1.0\dotnet-compile.assemblyinfo.cs"
--out:"C:\Users\matthew\Desktop\OrderJobs.Web\test\OrderJobs.Test\bin\Debug\netcoreapp1.0\OrderJobs.Test.dll"
+"C:\Users\matthew\Documents\OrderJobsWebAPI\test\OrderJobs.Test\obj\Debug\netcoreapp1.0\dotnet-compile.assemblyinfo.cs"
+-out:"C:\Users\matthew\Documents\OrderJobsWebAPI\test\OrderJobs.Test\bin\Debug\netcoreapp1.0\OrderJobs.Test.dll"
 -r:"C:\Users\matthew\.nuget\packages\dotnet-test-nunit\3.4.0-beta-3\lib\netcoreapp1.0\dotnet-test-nunit.dll"
 -r:"C:\Users\matthew\.nuget\packages\Microsoft.CSharp\4.0.1\ref\netstandard1.0\Microsoft.CSharp.dll"
 -r:"C:\Users\matthew\.nuget\packages\Microsoft.DiaSymReader\1.0.8\lib\netstandard1.1\Microsoft.DiaSymReader.dll"
@@ -101,6 +101,6 @@
 -r:"C:\Users\matthew\.nuget\packages\System.Threading.Timer\4.0.1\ref\netstandard1.2\System.Threading.Timer.dll"
 -r:"C:\Users\matthew\.nuget\packages\System.Xml.ReaderWriter\4.0.11\ref\netstandard1.3\System.Xml.ReaderWriter.dll"
 -r:"C:\Users\matthew\.nuget\packages\System.Xml.XDocument\4.0.11\ref\netstandard1.3\System.Xml.XDocument.dll"
--r:"C:\Users\matthew\Desktop\OrderJobs.Web\src\OrderJobs.Algorithm\bin\Debug\netstandard1.6\OrderJobs.Algorithm.dll"
-"C:\Users\matthew\Desktop\OrderJobs.Web\test\OrderJobs.Test\SequenceJobsTests.cs"
-"C:\Users\matthew\Desktop\OrderJobs.Web\test\OrderJobs.Test\Properties\AssemblyInfo.cs"
+-r:"C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Algorithm\bin\Debug\netstandard1.6\OrderJobs.Algorithm.dll"
+"C:\Users\matthew\Documents\OrderJobsWebAPI\test\OrderJobs.Test\SequenceJobsTests.cs"
+"C:\Users\matthew\Documents\OrderJobsWebAPI\test\OrderJobs.Test\Properties\AssemblyInfo.cs"

@@ -1,5 +1,5 @@
---temp-output:C:\Users\matthew\Desktop\OrderJobs.Web\test\OrderJobs.Test\obj\Debug\netcoreapp1.0\
---out:C:\Users\matthew\Desktop\OrderJobs.Web\test\OrderJobs.Test\bin\Debug\netcoreapp1.0\OrderJobs.Test.dll
+--temp-output:C:\Users\matthew\Documents\OrderJobsWebAPI\test\OrderJobs.Test\obj\Debug\netcoreapp1.0\
+--out:C:\Users\matthew\Documents\OrderJobsWebAPI\test\OrderJobs.Test\bin\Debug\netcoreapp1.0\OrderJobs.Test.dll
 --define:DEBUG
 --define:TRACE
 --define:NETCOREAPP1_0
@@ -103,6 +103,6 @@
 --reference:C:\Users\matthew\.nuget\packages\System.Threading.Timer\4.0.1\ref\netstandard1.2\System.Threading.Timer.dll
 --reference:C:\Users\matthew\.nuget\packages\System.Xml.ReaderWriter\4.0.11\ref\netstandard1.3\System.Xml.ReaderWriter.dll
 --reference:C:\Users\matthew\.nuget\packages\System.Xml.XDocument\4.0.11\ref\netstandard1.3\System.Xml.XDocument.dll
---reference:C:\Users\matthew\Desktop\OrderJobs.Web\src\OrderJobs.Algorithm\bin\Debug\netstandard1.6\OrderJobs.Algorithm.dll
-C:\Users\matthew\Desktop\OrderJobs.Web\test\OrderJobs.Test\SequenceJobsTests.cs
-C:\Users\matthew\Desktop\OrderJobs.Web\test\OrderJobs.Test\Properties\AssemblyInfo.cs
+--reference:C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Algorithm\bin\Debug\netstandard1.6\OrderJobs.Algorithm.dll
+C:\Users\matthew\Documents\OrderJobsWebAPI\test\OrderJobs.Test\SequenceJobsTests.cs
+C:\Users\matthew\Documents\OrderJobsWebAPI\test\OrderJobs.Test\Properties\AssemblyInfo.cs
