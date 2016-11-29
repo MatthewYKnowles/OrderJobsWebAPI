@@ -18,17 +18,15 @@ namespace OrderJobs.Algorithm
 
         public string GetJobSequence()
         {
-            return _hasJobs ? OrderJobs(): "";
+            return _hasJobs ? OrderJobs() : "";
         }
 
         private string OrderJobs()
         {
             string jobs = "";
-            jobs += _splitJobs[0][0].ToString();
-
-            if (_splitJobs.Length > 1)
+            foreach (string job in _splitJobs)
             {
-                jobs += _splitJobs[1][0].ToString();
+                jobs += job[0];
             }
             return jobs;
         }
