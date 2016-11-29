@@ -7,28 +7,24 @@ namespace OrderJobs.Algorithm
 {
     public class SequenceJobs
     {
-        private List<Job> _jobs = new List<Job>();
-        private readonly string[] _splitJobs;
+        private IEnumerable<Job> _jobs = new List<Job>();
         private readonly bool _hasJobs;
 
         public SequenceJobs(string jobs)
         {
             _hasJobs = jobs != "";
-            _splitJobs = jobs.Split('|');
-            foreach (string job in _splitJobs)
+            CreateJobList(jobs.Split('|'));
+        }
+
+        private void CreateJobList(string[] splitJobs)
+        {
+            _jobs = splitJobs.Select(job =>
             {
-                string jobName = "";
-                string jobDependency = "";
-                if (job.Length > 0)
-                {
-                    jobName = job[0].ToString();
-                }
-                if (job.Length > 2)
-                {
-                    jobDependency = job[2].ToString();
-                }
-                _jobs.Add(new Job(jobName, jobDependency));
-            }
+                var jobParts = job.Split('-');
+                var jobName = jobParts.FirstOrDefault();
+                var dependency = jobParts.Length > 1 ? jobParts.ElementAt(1) : "";
+                return new Job(jobName, dependency);
+            });
         }
 
         public string GetJobSequence()
