@@ -15,7 +15,20 @@ namespace OrderJobs.Algorithm
         {
             _hasJobs = jobs != "";
             _splitJobs = jobs.Split('|');
-            _jobs.Add(new Job("a", "b"));
+            foreach (string job in _splitJobs)
+            {
+                string jobName = "";
+                string jobDependency = "";
+                if (job.Length > 0)
+                {
+                    jobName = job[0].ToString();
+                }
+                if (job.Length > 2)
+                {
+                    jobDependency = job[2].ToString();
+                }
+                _jobs.Add(new Job(jobName, jobDependency));
+            }
         }
 
         public string GetJobSequence()
@@ -26,9 +39,9 @@ namespace OrderJobs.Algorithm
         private string OrderJobs()
         {
             string jobs = "";
-            foreach (string job in _splitJobs)
+            foreach (Job job in _jobs)
             {
-                jobs += job[0];
+                jobs += job.Name;
             }
             return jobs;
         }
