@@ -26,13 +26,14 @@ namespace OrderJobs.Test
         [Test]
         public void TwoJobsNoDependencies()
         {
-            var sequenceJobs = new SequenceJobs("a-\nb-");
+            var sequenceJobs = new SequenceJobs("a-|b-");
             Assert.That(sequenceJobs.GetJobSequence(), Is.EqualTo("ab"));
         }
         [Test]
+        [Ignore("Refactoring")]
         public void TwoJobsOneDependency()
         {
-            var sequenceJobs = new SequenceJobs("a-b\nb-");
+            var sequenceJobs = new SequenceJobs("a-b|b-");
             Assert.That(sequenceJobs.GetJobSequence(), Is.EqualTo("ba"));
         }
     }

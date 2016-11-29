@@ -7,13 +7,15 @@ namespace OrderJobs.Algorithm
 {
     public class SequenceJobs
     {
+        private List<Job> _jobs = new List<Job>();
         private readonly string[] _splitJobs;
-        private bool _hasJobs;
+        private readonly bool _hasJobs;
 
         public SequenceJobs(string jobs)
         {
             _hasJobs = jobs != "";
-            _splitJobs = jobs.Split('\n');
+            _splitJobs = jobs.Split('|');
+            _jobs.Add(new Job("a", "b"));
         }
 
         public string GetJobSequence()
@@ -29,6 +31,18 @@ namespace OrderJobs.Algorithm
                 jobs += job[0];
             }
             return jobs;
+        }
+    }
+
+    public class Job
+    {
+        public string Name { get; }
+        public string Dependency { get; }
+
+        public Job(string name, string dependency)
+        {
+            Name = name;
+            Dependency = dependency;
         }
     }
 }
