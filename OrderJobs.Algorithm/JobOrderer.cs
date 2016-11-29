@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace OrderJobs.Algorithm
 {
-    public class OrderJobs
+    public class JobOrderer
     {
         private readonly string _jobs;
 
-        public OrderJobs(string jobs)
+        public JobOrderer(string jobs)
         {
             _jobs = jobs;
         }

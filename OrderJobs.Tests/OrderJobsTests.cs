@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using OrderJobs.Algorithm;
 
 namespace OrderJobs.Tests
 {
@@ -13,13 +14,13 @@ namespace OrderJobs.Tests
         [Test]
         public void NoJobsReturnsEmptyString()
         {
-            Algorithm.OrderJobs orderJobs = new Algorithm.OrderJobs("");
+            var orderJobs = new JobOrderer("");
             Assert.That(orderJobs.Order(), Is.EqualTo(""));
         }
         [Test]
         public void ReturnJobWithNoDependencies()
         {
-            Algorithm.OrderJobs orderJobs = new Algorithm.OrderJobs("a =>");
+            var orderJobs = new JobOrderer("a =>");
             Assert.That(orderJobs.Order(), Is.EqualTo("a"));
         }
     }

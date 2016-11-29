@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderJobsWebAPI", "OrderJobsWebAPI\OrderJobsWebAPI.csproj", "{A9BBBFC0-E463-4008-AC97-2BDEB0594529}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderJobs.Web", "OrderJobsWebAPI\OrderJobs.Web.csproj", "{A9BBBFC0-E463-4008-AC97-2BDEB0594529}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderJobs.Algorithm", "OrderJobs.Algorithm\OrderJobs.Algorithm.csproj", "{96692CFD-BCFA-4897-B355-0D24E46BFEC1}"
 EndProject
