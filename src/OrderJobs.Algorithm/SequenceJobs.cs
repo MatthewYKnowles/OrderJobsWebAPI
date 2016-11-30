@@ -37,8 +37,19 @@ namespace OrderJobs.Algorithm
             string jobs = "";
             foreach (Job job in _jobs)
             {
-                jobs += job.Name;
+                if (job.Dependency == "")
+                {
+                    jobs += job.Name;
+                }
             }
+            foreach (Job job in _jobs)
+            {
+                if (job.Dependency.Length > 0)
+                {
+                    jobs += job.Name;
+                }
+            }
+
             return jobs;
         }
     }

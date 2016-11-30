@@ -30,7 +30,6 @@ namespace OrderJobs.Test
             Assert.That(sequenceJobs.GetJobSequence(), Is.EqualTo("ab"));
         }
         [Test]
-        [Ignore("Refactoring")]
         public void TwoJobsOneDependency()
         {
             var sequenceJobs = new SequenceJobs("a-b|b-");
