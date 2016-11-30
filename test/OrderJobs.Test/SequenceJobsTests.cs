@@ -41,5 +41,23 @@ namespace OrderJobs.Test
             var sequenceJobs = new SequenceJobs("a-b|b-c|c-");
             Assert.That(sequenceJobs.GetJobSequence(), Is.EqualTo("cba"));
         }
+        [Test]
+        public void SixJobsWithLotsOfDependencies()
+        {
+            var sequenceJobs = new SequenceJobs("a-b|b-c|c-|d-a|e-");
+            Assert.That(sequenceJobs.GetJobSequence(), Is.EqualTo("cebad"));
+        }
+        [Test]
+        public void JobDependsOnSelf()
+        {
+            var sequenceJobs = new SequenceJobs("a-b|b-c|c-c|d-a|e-");
+            Assert.Throws<ArgumentOutOfRangeException>(() => sequenceJobs.GetJobSequence());
+        }
+        [Test]
+        public void CircularDependency()
+        {
+            var sequenceJobs = new SequenceJobs("a-b|b-c|c-d|d-a|e-f|f-e");
+            Assert.Throws<ArgumentOutOfRangeException>(() => sequenceJobs.GetJobSequence());
+        }
     }
 }

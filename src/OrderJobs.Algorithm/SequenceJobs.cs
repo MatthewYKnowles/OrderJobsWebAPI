@@ -7,8 +7,7 @@ namespace OrderJobs.Algorithm
 {
     public class SequenceJobs
     {
-        private IEnumerable<Job> _jobs = new List<Job>();
-        private IEnumerable<Job> _jobsRemaining;
+        private List<Job> _jobs = new List<Job>();
         private readonly bool _hasJobs;
         private string _orderedJobs = "";
 
@@ -26,7 +25,7 @@ namespace OrderJobs.Algorithm
                 var jobName = jobParts.FirstOrDefault();
                 var dependency = jobParts.Length > 1 ? jobParts.ElementAt(1) : "";
                 return new Job(jobName, dependency);
-            });
+            }).ToList();
         }
 
         public string GetJobSequence()
@@ -37,30 +36,52 @@ namespace OrderJobs.Algorithm
         private string OrderJobs()
         {
             AddJobsWithNoDependencies();
-            CollectUnaddedJobs();
-            AddJobsWithDependenciesMet();
-            CollectUnaddedJobs();
-            AddJobsWithDependenciesMet();
-
+            CheckForJobDependingOnSelf();
+            AddJobsWithDependencies();
             return _orderedJobs;
+        }
+
+        private void CheckForJobDependingOnSelf()
+        {
+            foreach (Job job in _jobs)
+            {
+                if (job.Name == job.Dependency)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        private void AddJobsWithDependencies()
+        {
+            int jobsLeft = _jobs.Count;
+            while (_jobs.Count > 0)
+            {
+                jobsLeft = _jobs.Count;
+                CollectUnaddedJobs();
+                AddJobsWithDependenciesMet();
+                if (jobsLeft == _jobs.Count)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+            }
         }
 
         private void AddJobsWithDependenciesMet()
         {
-            _orderedJobs =
-                _jobsRemaining.Where(job => _orderedJobs.Contains(job.Dependency))
-                    .ToList()
+            _orderedJobs = _jobs.Where(job => _orderedJobs.Contains(job.Dependency))
                     .Aggregate(_orderedJobs, (acc, job) => acc + job.Name);
         }
 
         private void CollectUnaddedJobs()
         {
-            _jobsRemaining = _jobs.Where(job => !_orderedJobs.Contains(job.Name));
+            _jobs = _jobs.Where(job => !_orderedJobs.Contains(job.Name)).ToList();
         }
 
         private void AddJobsWithNoDependencies()
         {
-            _orderedJobs = _jobs.Where(job => job.Dependency == "").Aggregate(_orderedJobs, (acc, job) => acc + job.Name);
+            _orderedJobs = _jobs.Where(job => job.Dependency == "")
+                .Aggregate(_orderedJobs, (acc, job) => acc + job.Name);
         }
     }
 
