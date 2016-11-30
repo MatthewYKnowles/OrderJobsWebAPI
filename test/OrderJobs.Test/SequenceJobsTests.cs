@@ -35,5 +35,11 @@ namespace OrderJobs.Test
             var sequenceJobs = new SequenceJobs("a-b|b-");
             Assert.That(sequenceJobs.GetJobSequence(), Is.EqualTo("ba"));
         }
+        [Test]
+        public void ThreeJobsWithSomeDependencies()
+        {
+            var sequenceJobs = new SequenceJobs("a-b|b-c|c-");
+            Assert.That(sequenceJobs.GetJobSequence(), Is.EqualTo("cba"));
+        }
     }
 }

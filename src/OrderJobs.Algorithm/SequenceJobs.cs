@@ -8,6 +8,7 @@ namespace OrderJobs.Algorithm
     public class SequenceJobs
     {
         private IEnumerable<Job> _jobs = new List<Job>();
+        private IEnumerable<Job> _jobsRemaining;
         private readonly bool _hasJobs;
         private string _orderedJobs = "";
 
@@ -36,7 +37,9 @@ namespace OrderJobs.Algorithm
         private string OrderJobs()
         {
             _orderedJobs = _jobs.Where(job => job.Dependency == "").Aggregate(_orderedJobs, (acc, job) => acc + job.Name);
-            _orderedJobs = _jobs.Where(job => job.Dependency != "").ToList().Aggregate(_orderedJobs, (acc, job) => acc + job.Name);
+            _orderedJobs = _jobs.Where(job => _orderedJobs.Contains(job.Dependency) && job.Dependency != "").ToList().Aggregate(_orderedJobs, (acc, job) => acc + job.Name);
+            _jobsRemaining = _jobs.Where(job => !_orderedJobs.Contains(job.Name));
+            _orderedJobs = _jobsRemaining.Where(job => _orderedJobs.Contains(job.Dependency) && job.Dependency != "").ToList().Aggregate(_orderedJobs, (acc, job) => acc + job.Name);
 
             return _orderedJobs;
         }
