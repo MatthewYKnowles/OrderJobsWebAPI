@@ -9,6 +9,7 @@ namespace OrderJobs.Algorithm
     {
         private IEnumerable<Job> _jobs = new List<Job>();
         private readonly bool _hasJobs;
+        private string _orderedJobs = "";
 
         public SequenceJobs(string jobs)
         {
@@ -34,23 +35,18 @@ namespace OrderJobs.Algorithm
 
         private string OrderJobs()
         {
-            string jobs = "";
-            foreach (Job job in _jobs)
-            {
-                if (job.Dependency == "")
-                {
-                    jobs += job.Name;
-                }
-            }
+            List<Job> jobsWithNoDependencies = _jobs.Where(job => job.Dependency == "").ToList();
+            _orderedJobs += jobsWithNoDependencies.Aggregate(_orderedJobs, (acc, x) => acc + x.Name);
+
             foreach (Job job in _jobs)
             {
                 if (job.Dependency.Length > 0)
                 {
-                    jobs += job.Name;
+                    _orderedJobs += job.Name;
                 }
             }
 
-            return jobs;
+            return _orderedJobs;
         }
     }
 
