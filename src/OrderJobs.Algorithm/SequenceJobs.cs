@@ -35,16 +35,8 @@ namespace OrderJobs.Algorithm
 
         private string OrderJobs()
         {
-            List<Job> jobsWithNoDependencies = _jobs.Where(job => job.Dependency == "").ToList();
-            _orderedJobs += jobsWithNoDependencies.Aggregate(_orderedJobs, (acc, x) => acc + x.Name);
-
-            foreach (Job job in _jobs)
-            {
-                if (job.Dependency.Length > 0)
-                {
-                    _orderedJobs += job.Name;
-                }
-            }
+            _orderedJobs = _jobs.Where(job => job.Dependency == "").Aggregate(_orderedJobs, (acc, job) => acc + job.Name);
+            _orderedJobs = _jobs.Where(job => job.Dependency != "").ToList().Aggregate(_orderedJobs, (acc, job) => acc + job.Name);
 
             return _orderedJobs;
         }
