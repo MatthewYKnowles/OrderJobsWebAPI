@@ -1,19 +1,22 @@
-﻿namespace OrderJobs.Algorithm
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace OrderJobs.Algorithm
 {
-    public class VerifyJobOrder
+    public class VerifyJobOrder : OrderingJobs
     {
-        private string _unorderedJobs;
         private readonly string _orderedJobsToCheck;
+        private List<Job> _jobs;
 
         public VerifyJobOrder(string unorderedJobs, string orderedJobsToCheck)
         {
-            this._unorderedJobs = unorderedJobs;
-            this._orderedJobsToCheck = orderedJobsToCheck;
+            _jobs = CreateJobList(unorderedJobs.Split('|'));
+            _orderedJobsToCheck = orderedJobsToCheck;
         }
 
         public bool IsValid()
         {
-            if (_orderedJobsToCheck == "b")
+            if (_orderedJobsToCheck != _jobs[0].Name)
             {
                 return false;
             }
