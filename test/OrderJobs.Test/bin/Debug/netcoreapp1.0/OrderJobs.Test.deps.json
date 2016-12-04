@@ -10,7 +10,8 @@
         "dependencies": {
           "dotnet-test-nunit": "3.4.0-beta-3",
           "NUnit": "3.5.0",
-          "OrderJobs.Algorithm": "1.0.0"
+          "OrderJobs.Algorithm": "1.0.0",
+          "OrderJobsVerification.Algorithm": "1.0.0"
         },
         "runtime": {
           "OrderJobs.Test.dll": {}
@@ -178,6 +179,11 @@
         "runtime": {
           "OrderJobs.Algorithm.dll": {}
         }
+      },
+      "OrderJobsVerification.Algorithm/1.0.0": {
+        "runtime": {
+          "OrderJobsVerification.Algorithm.dll": {}
+        }
       }
     }
   },
@@ -278,6 +284,11 @@
       "sha512": "sha512-HZ6Du5QrTG8MNJbf4e4qMO3JRAkIboGT5Fk804uZtg3Gq516S7hAqTm2UZKUHa7/6HUGdVy3AqMQKbns06G/cg=="
     },
     "OrderJobs.Algorithm/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "OrderJobsVerification.Algorithm/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

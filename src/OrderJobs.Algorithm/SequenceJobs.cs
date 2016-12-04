@@ -84,16 +84,4 @@ namespace OrderJobs.Algorithm
                 .Aggregate(_orderedJobs, (acc, job) => acc + job.Name);
         }
     }
-
-    public class Job
-    {
-        public string Name { get; }
-        public string Dependency { get; }
-
-        public Job(string name, string dependency)
-        {
-            Name = name;
-            Dependency = dependency;
-        }
-    }
 }

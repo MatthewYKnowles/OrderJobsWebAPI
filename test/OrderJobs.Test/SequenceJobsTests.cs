@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using OrderJobs.Algorithm;
+using OrderJobsVerification.Algorithm;
 
 namespace OrderJobs.Test
 {
@@ -58,6 +59,23 @@ namespace OrderJobs.Test
         {
             var sequenceJobs = new SequenceJobs("a-b|b-c|c-d|d-a|e-f|f-e");
             Assert.Throws<ArgumentOutOfRangeException>(() => sequenceJobs.GetJobSequence());
+        }
+    }
+
+    [TestFixture]
+    public class OrderedJobsVerificationTests
+    {
+        [Test]
+        public void EmptyJobListTest()
+        {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("", "");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(true));
+        }
+        [Test]
+        public void WrongJobReturnedTest()
+        {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-", "b");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
         }
     }
 }
