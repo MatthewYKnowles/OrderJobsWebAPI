@@ -3,8 +3,10 @@ using System.Linq;
 
 namespace OrderJobs.Algorithm
 {
-    public class OrderingJobs
+    public abstract class OrderingJobs
     {
+        protected List<Job> _jobs;
+
         protected List<Job> CreateJobList(string[] splitJobs)
         {
             List<Job> jobs = splitJobs.Select(job =>

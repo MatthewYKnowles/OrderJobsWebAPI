@@ -6,7 +6,6 @@ namespace OrderJobs.Algorithm
     public class VerifyJobOrder : OrderingJobs
     {
         private readonly string _orderedJobsToCheck;
-        private List<Job> _jobs;
 
         public VerifyJobOrder(string unorderedJobs, string orderedJobsToCheck)
         {
@@ -16,11 +15,8 @@ namespace OrderJobs.Algorithm
 
         public bool IsValid()
         {
-            if (_orderedJobsToCheck != _jobs[0].Name)
-            {
-                return false;
-            }
-            return true;
+            if (_orderedJobsToCheck == _jobs[0].Name) return true;
+            return false;
         }
     }
 }

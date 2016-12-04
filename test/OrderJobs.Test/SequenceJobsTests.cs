@@ -76,5 +76,11 @@ namespace OrderJobs.Test
             VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-", "b");
             Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
         }
+        [Test]
+        public void TwoJobsNoDependenciesTest()
+        {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-|b-", "ab");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(true));
+        }
     }
 }
