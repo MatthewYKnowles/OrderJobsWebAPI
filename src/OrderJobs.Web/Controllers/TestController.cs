@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +12,7 @@ namespace OrderJobs.Web.Controllers
     [Route("api/[controller]")]
     public class TestController : Controller
     {
-        // GET: api/values
+        // GET: api/test
         [HttpGet]
         public IEnumerable<string> Get()
         {
@@ -22,6 +23,12 @@ namespace OrderJobs.Web.Controllers
         [HttpGet("{id}")]
         public string Get(int id)
         {
+            //look at all test cases in db
+            //
+
+            //var client = new HttpClient();
+            //client.GetAsync(http:// + id + testcase (from db), )
+            Console.WriteLine(id);
             return "value";
         }
 
@@ -29,6 +36,7 @@ namespace OrderJobs.Web.Controllers
         [HttpPost]
         public void Post([FromBody]string value)
         {
+            //place in database
         }
 
         // PUT api/values/5

@@ -19,6 +19,7 @@ namespace OrderJobs.Algorithm
 
         public string GetJobSequence()
         {
+            //move try here
             return _hasJobs ? OrderJobs() : "";
         }
 
@@ -36,7 +37,7 @@ namespace OrderJobs.Algorithm
             {
                 if (job.Name == job.Dependency)
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new SelfReferenceException();
                 }
             }
         }
@@ -51,7 +52,7 @@ namespace OrderJobs.Algorithm
                 AddJobsWithDependenciesMet();
                 if (jobsLeft == _jobs.Count)
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new CircularDependencyException();
                 }
             }
         }
@@ -72,5 +73,15 @@ namespace OrderJobs.Algorithm
             _orderedJobs = _jobs.Where(job => job.Dependency == "")
                 .Aggregate(_orderedJobs, (acc, job) => acc + job.Name);
         }
+    }
+
+    public class SelfReferenceException : Exception
+    {
+        public override string Message => "Can not resolve job depending on itself";
+    }
+
+    public class CircularDependencyException : Exception
+    {
+        public override string Message => "Can not resolve circular dependency";
     }
 }
