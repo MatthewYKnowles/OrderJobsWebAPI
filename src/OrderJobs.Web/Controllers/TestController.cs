@@ -36,7 +36,11 @@ namespace OrderJobs.Web.Controllers
         [HttpPost]
         public void Post([FromBody]string value)
         {
-            //place in database
+            var orderJobsStorage = new OrderJobsStorage();
+            orderJobsStorage.TestCases.InsertOneAsync("Test");
+            //var blogContext = new BlogContext();
+            //var post = new Post
+            //await blogContext.Posts.InsertOneAsync(post);
         }
 
         // PUT api/values/5

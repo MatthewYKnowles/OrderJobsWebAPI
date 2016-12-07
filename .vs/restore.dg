@@ -1,3 +1,2 @@
-#:D:\Code\OrderJobsWebAPI\test\OrderJobs.Test\OrderJobs.Test.xproj
-D:\Code\OrderJobsWebAPI\test\OrderJobs.Test\OrderJobs.Test.xproj|D:\Code\OrderJobsWebAPI\src\OrderJobs.Algorithm\OrderJobs.Algorithm.xproj
-D:\Code\OrderJobsWebAPI\test\OrderJobs.Test\OrderJobs.Test.xproj|D:\Code\OrderJobsWebAPI\src\OrderJobsVerification.Algorithm\OrderJobsVerification.Algorithm.xproj
+#:C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\OrderJobs.Web.xproj
+C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\OrderJobs.Web.xproj|C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Algorithm\OrderJobs.Algorithm.xproj
