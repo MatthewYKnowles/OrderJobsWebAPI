@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using OrderJobs.Algorithm;
 
 namespace OrderJobs.Web
 {
@@ -10,17 +11,18 @@ namespace OrderJobs.Web
     {
         private static IMongoClient _client;
         private static IMongoDatabase _database;
-        public const string testCasesCollection = "testcases";
+        public string testCasesCollection = "testcases";
         static OrderJobsStorage()
         {
             var connectionString = "mongodb://localhost:27017";
             _client = new MongoClient(connectionString);
-            _database = _client.GetDatabase("OrderedJobs");
+            _database = _client.GetDatabase("orderedjobs");
         }
 
-        public IMongoCollection<string> TestCases
+        public IMongoCollection<Job> TestCases
         {
-            get { return _database.GetCollection<string>(testCasesCollection); }
+            get { return _database.GetCollection<Job>(testCasesCollection); }
         }
+
     }
 }

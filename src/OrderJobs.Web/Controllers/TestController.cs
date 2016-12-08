@@ -4,6 +4,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using OrderJobs.Algorithm;
+using MongoDB.Driver;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -34,10 +37,16 @@ namespace OrderJobs.Web.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async void Post([FromBody]string value)
         {
-            var orderJobsStorage = new OrderJobsStorage();
-            orderJobsStorage.TestCases.InsertOneAsync("Test");
+            IMongoClient _client = new MongoClient();
+            IMongoDatabase _database = _client.GetDatabase("orderedjobs");
+            var collection = _database.GetCollection<BsonDocument>("testcases");
+            var document = new BsonDocument
+            {
+                {"test2", "test2"}
+            };
+            await collection.InsertOneAsync(document);
             //var blogContext = new BlogContext();
             //var post = new Post
             //await blogContext.Posts.InsertOneAsync(post);
