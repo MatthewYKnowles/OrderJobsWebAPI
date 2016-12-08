@@ -32,24 +32,17 @@ namespace OrderJobs.Web.Controllers
             //var client = new HttpClient();
             //client.GetAsync(http:// + id + testcase (from db), )
             Console.WriteLine(id);
-            return "value";
+            return "testCases";
         }
 
         // POST api/values
         [HttpPost]
-        public async void Post([FromBody]string value)
+        public async void Post([FromBody]TestCases testCases)
         {
             IMongoClient _client = new MongoClient();
             IMongoDatabase _database = _client.GetDatabase("orderedjobs");
-            var collection = _database.GetCollection<BsonDocument>("testcases");
-            var document = new BsonDocument
-            {
-                {"test2", "test2"}
-            };
-            await collection.InsertOneAsync(document);
-            //var blogContext = new BlogContext();
-            //var post = new Post
-            //await blogContext.Posts.InsertOneAsync(post);
+            var collection = _database.GetCollection<TestCases>("testcases");
+            await collection.InsertOneAsync(testCases);
         }
 
         // PUT api/values/5
