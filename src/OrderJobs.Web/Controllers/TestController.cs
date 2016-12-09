@@ -8,41 +8,40 @@ using MongoDB.Bson;
 using OrderJobs.Algorithm;
 using MongoDB.Driver;
 
-// For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace OrderJobs.Web.Controllers
 {
     [Route("api/[controller]")]
     public class TestController : Controller
     {
-        // GET: api/test
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly TestCaseDatabase _testCaseDatabase;
+        public TestController()
         {
-            return new string[] { "value1", "value2" };
+            _testCaseDatabase = new TestCaseDatabase();
         }
-
         // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        public async Task<string> Get([FromQuery]string url)
         {
-            //look at all test cases in db
-            //
-
-            //var client = new HttpClient();
-            //client.GetAsync(http:// + id + testcase (from db), )
-            Console.WriteLine(id);
-            return "testCases";
+            var client = new HttpClient();
+            string jobs = "";
+            IEnumerable<TestCases> testCaseList = _testCaseDatabase.GetTestCases();
+                
+            //magical string to call
+            //http://localhost:55163/api/test?url=http://localhost:55163/api/values/
+            foreach (var testCase in testCaseList)
+            {
+                HttpResponseMessage response = await client.GetAsync(url + testCase.TestCase);
+                jobs += await response.Content.ReadAsStringAsync() + "\n";
+            }
+            return jobs;
         }
 
         // POST api/values
         [HttpPost]
-        public async void Post([FromBody]TestCases testCases)
+        public void Post([FromBody]TestCases testCase)
         {
-            IMongoClient _client = new MongoClient();
-            IMongoDatabase _database = _client.GetDatabase("orderedjobs");
-            var collection = _database.GetCollection<TestCases>("testcases");
-            await collection.InsertOneAsync(testCases);
+            _testCaseDatabase.InsertTestCase(testCase);
         }
 
         // PUT api/values/5
