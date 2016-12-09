@@ -22,11 +22,17 @@ namespace OrderJobs.Algorithm
             }
             for (var index = 0; index < _orderedJobsToCheck.Length; index++)
             {
+                string alreadyAddedJobs = _orderedJobsToCheck.Substring(0, index);
                 Job currentJob = _jobs.Find(job => job.Name == _orderedJobsToCheck[index].ToString());
                 if (currentJob == null)
                 {
                     validOrdering = false;
                 }
+                if (currentJob != null && !alreadyAddedJobs.Contains(currentJob.Dependency))
+                {
+                    validOrdering = false;
+                }
+
             }
             return validOrdering;
         }

@@ -82,5 +82,23 @@ namespace OrderJobs.Test
             VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-|b-", "ab");
             Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(true));
         }
+        [Test]
+        public void TwoJobsSwitchedOrderTest()
+        {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-|b-", "ba");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(true));
+        }
+        [Test]
+        public void JobNotInListTest()
+        {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-|b-", "bac");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
+        }
+        [Test]
+        public void ThreeJobsOneDependency()
+        {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-|c-", "abc");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
+        }
     }
 }
