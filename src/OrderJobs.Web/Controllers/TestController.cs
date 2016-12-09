@@ -15,10 +15,12 @@ namespace OrderJobs.Web.Controllers
     public class TestController : Controller
     {
         private readonly TestCaseDatabase _testCaseDatabase;
+
         public TestController()
         {
             _testCaseDatabase = new TestCaseDatabase();
         }
+
         [HttpGet]
         public async Task<string> Get([FromQuery]string url)
         {

@@ -54,7 +54,6 @@
 -r:"C:\Users\matthew\.nuget\packages\System.Xml.ReaderWriter\4.0.11\ref\netstandard1.3\System.Xml.ReaderWriter.dll"
 -r:"C:\Users\matthew\.nuget\packages\System.Xml.XDocument\4.0.11\ref\netstandard1.3\System.Xml.XDocument.dll"
 "C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Algorithm\Job.cs"
-"C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Algorithm\OrderingJobs.cs"
 "C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Algorithm\OrderJobVerification.cs"
 "C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Algorithm\SequenceJobs.cs"
 "C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Algorithm\Properties\AssemblyInfo.cs"

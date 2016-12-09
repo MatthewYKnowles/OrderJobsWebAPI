@@ -5,15 +5,28 @@ using System.Threading.Tasks;
 
 namespace OrderJobs.Algorithm
 {
-    public class SequenceJobs : OrderingJobs
+    public class SequenceJobs
     {
         private List<Job> _jobs;
         private string _orderedJobs = "";
+        protected bool _hasJobs;
 
         public SequenceJobs(string jobs)
         {
             _hasJobs = jobs != "";
             _jobs = CreateJobList(jobs.Split('|'));
+        }
+
+        protected List<Job> CreateJobList(string[] splitJobs)
+        {
+            List<Job> jobs = splitJobs.Select(job =>
+            {
+                var jobParts = job.Split('-');
+                var jobName = jobParts.FirstOrDefault();
+                var dependency = jobParts.Length > 1 ? jobParts.ElementAt(1) : "";
+                return new Job(jobName, dependency);
+            }).ToList();
+            return jobs;
         }
 
         public string GetJobSequence()
