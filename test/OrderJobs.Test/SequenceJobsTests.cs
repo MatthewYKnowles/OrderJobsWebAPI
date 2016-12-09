@@ -100,5 +100,23 @@ namespace OrderJobs.Test
             VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-|c-", "abc");
             Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
         }
+        [Test]
+        public void FiveJobsFourDependencies()
+        {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-c|c-|d-b|e-d", "cbade");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(true));
+        }
+        [Test]
+        public void FiveJobsFourDependenciesWithIncorrectOrder()
+        {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-c|c-|d-b|e-d", "cbaed");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
+        }
+        [Test]
+        public void CheckForJobDependingOnItselfTest()
+        {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-c|c-c", "Can not resolve job depending on itself");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(true));
+        }
     }
 }

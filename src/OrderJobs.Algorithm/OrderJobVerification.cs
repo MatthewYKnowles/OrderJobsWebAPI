@@ -28,7 +28,7 @@ namespace OrderJobs.Algorithm
                 {
                     validOrdering = false;
                 }
-                if (currentJob != null && !alreadyAddedJobs.Contains(currentJob.Dependency))
+                else if (!alreadyAddedJobs.Contains(currentJob.Dependency))
                 {
                     validOrdering = false;
                 }
