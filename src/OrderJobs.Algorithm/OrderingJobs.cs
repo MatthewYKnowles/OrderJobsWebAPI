@@ -6,6 +6,7 @@ namespace OrderJobs.Algorithm
     public abstract class OrderingJobs
     {
         protected List<Job> _jobs;
+        protected bool _hasJobs;
 
         protected List<Job> CreateJobList(string[] splitJobs)
         {

@@ -15,8 +15,20 @@ namespace OrderJobs.Algorithm
 
         public bool IsValid()
         {
-            if (_orderedJobsToCheck == _jobs[0].Name) return true;
-            return false;
+            bool validOrdering = true;
+            if (_orderedJobsToCheck == "" && _orderedJobsToCheck == "")
+            {
+                return true;
+            }
+            for (var index = 0; index < _orderedJobsToCheck.Length; index++)
+            {
+                Job currentJob = _jobs.Find(job => job.Name == _orderedJobsToCheck[index].ToString());
+                if (currentJob == null)
+                {
+                    validOrdering = false;
+                }
+            }
+            return validOrdering;
         }
     }
 }

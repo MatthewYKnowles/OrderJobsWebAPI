@@ -8,7 +8,6 @@ namespace OrderJobs.Algorithm
     public class SequenceJobs : OrderingJobs
     {
         private List<Job> _jobs;
-        private readonly bool _hasJobs;
         private string _orderedJobs = "";
 
         public SequenceJobs(string jobs)

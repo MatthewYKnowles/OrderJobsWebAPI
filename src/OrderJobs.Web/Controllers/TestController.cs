@@ -19,7 +19,6 @@ namespace OrderJobs.Web.Controllers
         {
             _testCaseDatabase = new TestCaseDatabase();
         }
-        // GET api/values/5
         [HttpGet]
         public async Task<string> Get([FromQuery]string url)
         {
@@ -37,20 +36,17 @@ namespace OrderJobs.Web.Controllers
             return jobs;
         }
 
-        // POST api/values
         [HttpPost]
         public void Post([FromBody]TestCases testCase)
         {
             _testCaseDatabase.InsertTestCase(testCase);
         }
 
-        // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

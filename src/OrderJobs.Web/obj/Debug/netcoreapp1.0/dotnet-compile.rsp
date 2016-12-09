@@ -178,10 +178,9 @@
 --reference:C:\Users\matthew\.nuget\packages\System.Xml.XDocument\4.0.11\ref\netstandard1.3\System.Xml.XDocument.dll
 --reference:C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Algorithm\bin\Debug\netstandard1.6\OrderJobs.Algorithm.dll
 --resource:"C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\obj\Debug\netcoreapp1.0\OrderJobs.Webdotnet-compile.deps.json",OrderJobs.Web.deps.json
-C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\OrderJobs.Storage.cs
 C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\Program.cs
 C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\Startup.cs
-C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\TestCaseDatabase.cs
-C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\TestCases.cs
 C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\Controllers\TestController.cs
 C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\Controllers\ValuesController.cs
+C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\Models\TestCaseDatabase.cs
+C:\Users\matthew\Documents\OrderJobsWebAPI\src\OrderJobs.Web\Models\TestCases.cs
