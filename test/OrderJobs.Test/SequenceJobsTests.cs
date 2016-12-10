@@ -95,21 +95,27 @@ namespace OrderJobs.Test
             Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
         }
         [Test]
-        public void ThreeJobsOneDependency()
+        public void ThreeJobsOneDependencyTest()
         {
             VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-|c-", "abc");
             Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
         }
         [Test]
-        public void FiveJobsFourDependencies()
+        public void FiveJobsFourDependenciesTest()
         {
             VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-c|c-|d-b|e-d", "cbade");
             Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(true));
         }
         [Test]
-        public void FiveJobsFourDependenciesWithIncorrectOrder()
+        public void FiveJobsFourDependenciesWithIncorrectOrderTest()
         {
             VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-c|c-|d-b|e-d", "cbaed");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
+        }
+        [Test]
+        public void ExtraJobNotAddedToStringTest()
+        {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-|b-|c-|d-|e-|f-", "cbaed");
             Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
         }
         [Test]

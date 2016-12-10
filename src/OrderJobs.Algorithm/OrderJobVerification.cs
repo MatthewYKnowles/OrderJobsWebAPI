@@ -6,7 +6,7 @@ namespace OrderJobs.Algorithm
     public class VerifyJobOrder
     {
         private readonly string _orderedJobsToCheck;
-        private bool _validOrdering;
+        private bool _validOrderingOfJobs;
         protected List<Job> _jobs;
         protected bool _hasJobs;
 
@@ -36,29 +36,36 @@ namespace OrderJobs.Algorithm
             }
             else if (noJobsOrOrderedJobs())
             {
-                _validOrdering = true;
+                _validOrderingOfJobs = true;
             }
             else
             {
+                _validOrderingOfJobs = true;
                 checkToSeeIfJobOrderIsCorrect();
+                foreach (Job job in _jobs)
+                {
+                    if (!_orderedJobsToCheck.Contains(job.Name))
+                    {
+                        _validOrderingOfJobs = false;
+                    }
+                }
             }
-            return _validOrdering;
+            return _validOrderingOfJobs;
         }
 
         private void checkToSeeIfJobOrderIsCorrect()
         {
-            _validOrdering = true;
             for (var index = 0; index < _orderedJobsToCheck.Length; index++)
             {
                 string alreadyAddedJobs = _orderedJobsToCheck.Substring(0, index);
                 Job currentJob = _jobs.Find(job => job.Name == _orderedJobsToCheck[index].ToString());
                 if (currentJob == null)
                 {
-                    _validOrdering = false;
+                    _validOrderingOfJobs = false;
                 }
                 else if (!alreadyAddedJobs.Contains(currentJob.Dependency))
                 {
-                    _validOrdering = false;
+                    _validOrderingOfJobs = false;
                 }
             }
         }
@@ -70,12 +77,12 @@ namespace OrderJobs.Algorithm
 
         private void checkIfJobDependsOnItself()
         {
-            _validOrdering = false;
+            _validOrderingOfJobs = false;
             foreach (Job job in _jobs)
             {
                 if (job.Name == job.Dependency)
                 {
-                    _validOrdering = true;
+                    _validOrderingOfJobs = true;
                 }
             }
         }
