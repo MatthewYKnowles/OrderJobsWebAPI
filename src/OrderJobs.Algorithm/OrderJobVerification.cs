@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OrderJobs.Algorithm
 {
     public class VerifyJobOrder
     {
+        private readonly string _unorderedJobs;
         private readonly string _orderedJobsToCheck;
         private bool _validOrderingOfJobs;
         protected List<Job> _jobs;
@@ -13,6 +15,7 @@ namespace OrderJobs.Algorithm
         public VerifyJobOrder(string unorderedJobs, string orderedJobsToCheck)
         {
             _jobs = CreateJobList(unorderedJobs.Split('|'));
+            _unorderedJobs = unorderedJobs;
             _orderedJobsToCheck = orderedJobsToCheck;
         }
 
@@ -30,52 +33,72 @@ namespace OrderJobs.Algorithm
 
         public bool IsValid()
         {
-            if (jobMightDependOnItself())
+            if (JobMightDependOnItself())
             {
-                checkIfJobDependsOnItself();
+                CheckIfJobDependsOnItself();
             }
-            else if (noJobsOrOrderedJobs())
+            else if (JobsToOrderMightHaveCircularDependency())
+            {
+                CheckIfCircularDependency();
+            }
+            else if (NoJobsOrOrderedJobs())
             {
                 _validOrderingOfJobs = true;
             }
             else
             {
                 _validOrderingOfJobs = true;
-                checkToSeeIfJobOrderIsCorrect();
-                foreach (Job job in _jobs)
-                {
-                    if (!_orderedJobsToCheck.Contains(job.Name))
-                    {
-                        _validOrderingOfJobs = false;
-                    }
-                }
+                CheckToSeeIfJobOrderIsCorrect();
+                CheckToSeeIfAJobWasNotAdded();
             }
             return _validOrderingOfJobs;
         }
 
-        private void checkToSeeIfJobOrderIsCorrect()
+        private bool JobsToOrderMightHaveCircularDependency()
+        {
+            return _orderedJobsToCheck == "Can not resolve circular dependency";
+        }
+
+        private void CheckIfCircularDependency()
+        {
+            _validOrderingOfJobs = false;
+            var sequenceJobs = new SequenceJobs(_unorderedJobs);
+            if (sequenceJobs.GetJobSequence() == "Can not resolve circular dependency")
+            {
+                _validOrderingOfJobs = true;
+            }
+        }
+
+        private void CheckToSeeIfAJobWasNotAdded()
+        {
+            foreach (Job job in _jobs)
+            {
+                if (!_orderedJobsToCheck.Contains(job.Name))
+                {
+                    _validOrderingOfJobs = false;
+                }
+            }
+        }
+
+        private void CheckToSeeIfJobOrderIsCorrect()
         {
             for (var index = 0; index < _orderedJobsToCheck.Length; index++)
             {
                 string alreadyAddedJobs = _orderedJobsToCheck.Substring(0, index);
                 Job currentJob = _jobs.Find(job => job.Name == _orderedJobsToCheck[index].ToString());
-                if (currentJob == null)
-                {
-                    _validOrderingOfJobs = false;
-                }
-                else if (!alreadyAddedJobs.Contains(currentJob.Dependency))
+                if (currentJob == null || !alreadyAddedJobs.Contains(currentJob.Dependency))
                 {
                     _validOrderingOfJobs = false;
                 }
             }
         }
 
-        private bool noJobsOrOrderedJobs()
+        private bool NoJobsOrOrderedJobs()
         {
             return _orderedJobsToCheck == "" && _orderedJobsToCheck == "";
         }
 
-        private void checkIfJobDependsOnItself()
+        private void CheckIfJobDependsOnItself()
         {
             _validOrderingOfJobs = false;
             foreach (Job job in _jobs)
@@ -87,7 +110,7 @@ namespace OrderJobs.Algorithm
             }
         }
 
-        private bool jobMightDependOnItself()
+        private bool JobMightDependOnItself()
         {
             return _orderedJobsToCheck == "Can not resolve job depending on itself";
         }

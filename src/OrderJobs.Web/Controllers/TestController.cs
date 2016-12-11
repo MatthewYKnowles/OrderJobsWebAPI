@@ -22,20 +22,9 @@ namespace OrderJobs.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<string> Get([FromQuery]string url)
+        public Task<string> Get([FromQuery]string url)
         {
-            var client = new HttpClient();
-            string jobs = "";
-            IEnumerable<TestCases> testCaseList = _testCaseDatabase.GetTestCases();
-                
-            //magical string to call
-            //http://localhost:55163/api/test?url=http://localhost:55163/api/values/
-            foreach (var testCase in testCaseList)
-            {
-                HttpResponseMessage response = await client.GetAsync(url + testCase.TestCase);
-                jobs += await response.Content.ReadAsStringAsync() + "\n";
-            }
-            return jobs;
+            return  _testCaseDatabase.GetOrderedJobsPassFailResults(url);
         }
 
         [HttpPost]

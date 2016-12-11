@@ -31,11 +31,21 @@ namespace OrderJobs.Algorithm
 
         public string GetJobSequence()
         {
-            //move try here
-            return _hasJobs ? OrderJobs() : "";
+            if (!_hasJobs)
+            {
+                return "";
+            }
+            try
+            {
+                return OrderJobs();
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
         }
 
-        private string OrderJobs()
+        public string OrderJobs()
         {
             AddJobsWithNoDependencies();
             CheckForJobDependingOnSelf();

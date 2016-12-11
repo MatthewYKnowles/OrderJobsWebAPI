@@ -51,13 +51,13 @@ namespace OrderJobs.Test
         public void JobDependsOnSelf()
         {
             var sequenceJobs = new SequenceJobs("a-b|b-c|c-c|d-a|e-");
-            Assert.Throws<SelfReferenceException>(() => sequenceJobs.GetJobSequence());
+            Assert.Throws<SelfReferenceException>(() => sequenceJobs.OrderJobs());
         }
         [Test]
         public void CircularDependency()
         {
             var sequenceJobs = new SequenceJobs("a-b|b-c|c-d|d-a|e-f|f-e");
-            Assert.Throws<CircularDependencyException>(() => sequenceJobs.GetJobSequence());
+            Assert.Throws<CircularDependencyException>(() => sequenceJobs.OrderJobs());
         }
     }
 
@@ -122,6 +122,12 @@ namespace OrderJobs.Test
         public void CheckForJobDependingOnItselfTest()
         {
             VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-c|c-c", "Can not resolve job depending on itself");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(true));
+        }
+        [Test]
+        public void CheckIfCircularDependencyIsCorrectTest()
+        {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-c|c-a", "Can not resolve circular dependency");
             Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(true));
         }
     }

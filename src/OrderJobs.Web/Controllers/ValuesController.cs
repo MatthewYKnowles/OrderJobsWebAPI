@@ -21,17 +21,8 @@ namespace OrderJobs.Web.Controllers
         [HttpGet("{id}")]
         public string Get(string id)
         {
-            string orderedJobs;
             var sequenceJobs = new SequenceJobs(id);
-            try
-            {
-                orderedJobs = sequenceJobs.GetJobSequence();
-            }
-            catch (Exception e)
-            {
-                orderedJobs = e.Message;
-            }
-            return orderedJobs;
+            return sequenceJobs.GetJobSequence();
         }
 
         // POST api/values
