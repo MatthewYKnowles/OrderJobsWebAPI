@@ -21,14 +21,13 @@ namespace OrderJobs.Algorithm
 
         protected List<Job> CreateJobList(string[] splitJobs)
         {
-            List<Job> jobs = splitJobs.Select(job =>
+            return splitJobs.Select(job =>
             {
-                var jobParts = job.Split('-');
-                var jobName = jobParts.FirstOrDefault();
-                var dependency = jobParts.Length > 1 ? jobParts.ElementAt(1) : "";
-                return new Job(jobName, dependency);
+                var jobParts1 = job.Split('-');
+                var jobName1 = jobParts1.FirstOrDefault();
+                var dependency1 = jobParts1.Length > 1 ? jobParts1.ElementAt(1) : "";
+                return new Job(jobName1, dependency1);
             }).ToList();
-            return jobs;
         }
 
         public bool IsValid()
@@ -49,14 +48,17 @@ namespace OrderJobs.Algorithm
             {
                 _validOrderingOfJobs = true;
                 CheckToSeeIfJobOrderIsCorrect();
-                CheckToSeeIfAJobWasNotAdded();
+                string jobsAvailable = _jobs.Aggregate("", (acc, job) => acc + job.Name);
+                if (_orderedJobsToCheck.Any(job => !jobsAvailable.Contains(job)))
+                {
+                    _validOrderingOfJobs = false;
+                }
+                else
+                {
+                    CheckToSeeIfAJobWasNotAdded();
+                }
             }
             return _validOrderingOfJobs;
-        }
-
-        private bool JobsToOrderMightHaveCircularDependency()
-        {
-            return _orderedJobsToCheck == "Can not resolve circular dependency";
         }
 
         private void CheckIfCircularDependency()
@@ -71,26 +73,32 @@ namespace OrderJobs.Algorithm
 
         private void CheckToSeeIfAJobWasNotAdded()
         {
-            foreach (Job job in _jobs)
+            if (_jobs.Any(job => !_orderedJobsToCheck.Contains(job.Name)))
             {
-                if (!_orderedJobsToCheck.Contains(job.Name))
-                {
-                    _validOrderingOfJobs = false;
-                }
-            }
+                _validOrderingOfJobs = false;
+            };
         }
 
         private void CheckToSeeIfJobOrderIsCorrect()
         {
             for (var index = 0; index < _orderedJobsToCheck.Length; index++)
             {
-                string alreadyAddedJobs = _orderedJobsToCheck.Substring(0, index);
-                Job currentJob = _jobs.Find(job => job.Name == _orderedJobsToCheck[index].ToString());
-                if (currentJob == null || !alreadyAddedJobs.Contains(currentJob.Dependency))
+                string completedJobs = _orderedJobsToCheck.Substring(0, index);
+                if (JobDoesNotExistOrDependencyIsNotAlreadyAdded(index, completedJobs))
                 {
                     _validOrderingOfJobs = false;
                 }
             }
+        }
+
+        private bool JobDoesNotExistOrDependencyIsNotAlreadyAdded(int index, string alreadyAddedJobs)
+        {
+            var currentJob = _jobs.Find(job =>
+            {
+                var jobNameToCheck = _orderedJobsToCheck[index].ToString();
+                return job.Name == jobNameToCheck;
+            });
+            return currentJob == null || !alreadyAddedJobs.Contains(currentJob.Dependency);
         }
 
         private bool NoJobsOrOrderedJobs()
@@ -100,19 +108,17 @@ namespace OrderJobs.Algorithm
 
         private void CheckIfJobDependsOnItself()
         {
-            _validOrderingOfJobs = false;
-            foreach (Job job in _jobs)
-            {
-                if (job.Name == job.Dependency)
-                {
-                    _validOrderingOfJobs = true;
-                }
-            }
+            _validOrderingOfJobs = _jobs.Any(job => job.Name == job.Dependency);
         }
 
         private bool JobMightDependOnItself()
         {
             return _orderedJobsToCheck == "Can not resolve job depending on itself";
+        }
+
+        private bool JobsToOrderMightHaveCircularDependency()
+        {
+            return _orderedJobsToCheck == "Can not resolve circular dependency";
         }
     }
 }

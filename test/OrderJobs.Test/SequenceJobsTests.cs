@@ -16,7 +16,6 @@ namespace OrderJobs.Test
             var sequenceJobs = new SequenceJobs("");
             Assert.That(sequenceJobs.GetJobSequence(), Is.EqualTo(""));
         }
-
         [Test]
         public void OneJobNoDependency()
         {
@@ -97,6 +96,18 @@ namespace OrderJobs.Test
         [Test]
         public void ThreeJobsOneDependencyTest()
         {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-|c-", "bca");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(true));
+        }
+        [Test]
+        public void ThreeJobsOneDependencyDifferentOrderTest()
+        {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-|c-", "bac");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(true));
+        }
+        [Test]
+        public void ThreeJobsOneDependencyWrongOrderTest()
+        {
             VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-|c-", "abc");
             Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
         }
@@ -119,16 +130,28 @@ namespace OrderJobs.Test
             Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
         }
         [Test]
-        public void CheckForJobDependingOnItselfTest()
+        public void CheckForJobDependingOnItselfIsCorrectTest()
         {
             VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-c|c-c", "Can not resolve job depending on itself");
             Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(true));
+        }
+        [Test]
+        public void CheckForJobDependingOnItselfNotCorrectTest()
+        {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-c|c-", "Can not resolve job depending on itself");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
         }
         [Test]
         public void CheckIfCircularDependencyIsCorrectTest()
         {
             VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-c|c-a", "Can not resolve circular dependency");
             Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(true));
+        }
+        [Test]
+        public void CheckIfCircularDependencyNotCorrectTest()
+        {
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-c|c-", "Can not resolve circular dependency");
+            Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
         }
     }
 }
