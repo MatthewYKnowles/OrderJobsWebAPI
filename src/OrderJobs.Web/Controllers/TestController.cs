@@ -14,17 +14,19 @@ namespace OrderJobs.Web.Controllers
     [Route("api/[controller]")]
     public class TestController : Controller
     {
-        private readonly TestCaseDatabase _testCaseDatabase;
+        private readonly ITestCaseDatabase _testCaseDatabase;
+        private readonly OrderJobsPassFail _orderJobsPassFail;
 
-        public TestController()
+        public TestController(ITestCaseDatabase testCaseDatabase, OrderJobsPassFail orderJobsPassFail)
         {
-            _testCaseDatabase = new TestCaseDatabase();
+            _testCaseDatabase = testCaseDatabase;
+            _orderJobsPassFail = orderJobsPassFail;
         }
 
         [HttpGet]
         public Task<string> Get([FromQuery]string url)
         {
-            return  _testCaseDatabase.GetOrderedJobsPassFailResults(url);
+            return _orderJobsPassFail.GetOrderedJobsPassFailResults(url);
         }
 
         [HttpPost]

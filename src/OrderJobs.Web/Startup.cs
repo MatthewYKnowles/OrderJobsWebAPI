@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 
 namespace OrderJobs.Web
 {
@@ -29,6 +30,10 @@ namespace OrderJobs.Web
         {
             // Add framework services.
             services.AddMvc();
+            services.AddTransient<ITestCaseDatabase, TestCaseDatabase>();
+            services.AddTransient<IMongoClient, MongoClient>();
+            services.AddTransient<OrderJobsPassFail, OrderJobsPassFail>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
