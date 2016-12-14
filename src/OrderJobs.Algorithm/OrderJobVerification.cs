@@ -8,7 +8,6 @@ namespace OrderJobs.Algorithm
     {
         private readonly string _unorderedJobs;
         private readonly string _orderedJobsToCheck;
-        private bool _validOrderingOfJobs;
         protected List<Job> _jobs;
         protected bool _hasJobs;
 
@@ -32,73 +31,70 @@ namespace OrderJobs.Algorithm
 
         public bool IsValid()
         {
+            return JobsWereNotOrdered() ? NoJobsOrdered() : OrderingOfAllJobsIsValid();
+        }
+
+        private bool JobsWereNotOrdered()
+        {
+            return JobMightDependOnItself() || JobNotAdded() || JobsToOrderMightHaveCircularDependency();
+        }
+
+        private bool OrderingOfAllJobsIsValid()
+        {
+            return NoExtraJobOrJobNotAdded() && CheckToSeeIfJobOrderIsCorrect();
+        }
+
+        private bool NoExtraJobOrJobNotAdded()
+        {
+            return !ExtraJobAdded() && !JobNotAdded();
+        }
+
+        private bool NoJobsOrdered()
+        {
             if (JobMightDependOnItself())
             {
-                CheckIfJobDependsOnItself();
+                return CheckIfJobDependsOnItself();
             }
             else if (JobsToOrderMightHaveCircularDependency())
             {
-                CheckIfCircularDependency();
+                return CheckIfCircularDependency();
             }
             else if (NoJobsOrOrderedJobs())
             {
-                _validOrderingOfJobs = true;
+                return true;
             }
-            else
-            {
-                _validOrderingOfJobs = true;
-                CheckToSeeIfJobOrderIsCorrect();
-                string jobsAvailable = _jobs.Aggregate("", (acc, job) => acc + job.Name);
-                if (_orderedJobsToCheck.Any(job => !jobsAvailable.Contains(job)))
-                {
-                    _validOrderingOfJobs = false;
-                }
-                else
-                {
-                    CheckToSeeIfAJobWasNotAdded();
-                }
-            }
-            return _validOrderingOfJobs;
+            return false;
         }
 
-        private void CheckIfCircularDependency()
+        private bool JobNotAdded()
         {
-            _validOrderingOfJobs = false;
+            return _jobs.Any(job => !_orderedJobsToCheck.Contains(job.Name));
+        }
+
+        private bool ExtraJobAdded()
+        {
+            string jobsAvailable = _jobs.Aggregate("", (acc, job) => acc + job.Name);
+            return _orderedJobsToCheck.Any(job => !jobsAvailable.Contains(job));
+        }
+
+        private bool CheckIfCircularDependency()
+        {
             var sequenceJobs = new SequenceJobs(_unorderedJobs);
-            if (sequenceJobs.GetJobSequence() == "Can not resolve circular dependency")
-            {
-                _validOrderingOfJobs = true;
-            }
+            return sequenceJobs.GetJobSequence() == "Can not resolve circular dependency";
         }
 
-        private void CheckToSeeIfAJobWasNotAdded()
-        {
-            if (_jobs.Any(job => !_orderedJobsToCheck.Contains(job.Name)))
-            {
-                _validOrderingOfJobs = false;
-            };
-        }
-
-        private void CheckToSeeIfJobOrderIsCorrect()
+        private bool CheckToSeeIfJobOrderIsCorrect()
         {
             for (var index = 0; index < _orderedJobsToCheck.Length; index++)
             {
                 string completedJobs = _orderedJobsToCheck.Substring(0, index);
-                if (JobDoesNotExistOrDependencyIsNotAlreadyAdded(index, completedJobs))
+                Job currentJob = _jobs.Find(job => job.Name == _orderedJobsToCheck[index].ToString());
+                if (!completedJobs.Contains(currentJob.Dependency))
                 {
-                    _validOrderingOfJobs = false;
+                    return false;
                 }
             }
-        }
-
-        private bool JobDoesNotExistOrDependencyIsNotAlreadyAdded(int index, string alreadyAddedJobs)
-        {
-            var currentJob = _jobs.Find(job =>
-            {
-                var jobNameToCheck = _orderedJobsToCheck[index].ToString();
-                return job.Name == jobNameToCheck;
-            });
-            return currentJob == null || !alreadyAddedJobs.Contains(currentJob.Dependency);
+            return true;
         }
 
         private bool NoJobsOrOrderedJobs()
@@ -106,9 +102,9 @@ namespace OrderJobs.Algorithm
             return _orderedJobsToCheck == "" && _orderedJobsToCheck == "";
         }
 
-        private void CheckIfJobDependsOnItself()
+        private bool CheckIfJobDependsOnItself()
         {
-            _validOrderingOfJobs = _jobs.Any(job => job.Name == job.Dependency);
+            return _jobs.Any(job => job.Name == job.Dependency);
         }
 
         private bool JobMightDependOnItself()
