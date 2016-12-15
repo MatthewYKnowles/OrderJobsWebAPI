@@ -24,9 +24,9 @@ namespace OrderJobs.Web.Controllers
         }
 
         [HttpGet]
-        public Task<string> Get([FromQuery]string url)
+        public string Get([FromQuery]string url)
         {
-            return _orderJobsPassFail.GetOrderedJobsPassFailResults(url);
+            return _orderJobsPassFail.GetOrderedJobsPassFailResults(url).Result;
         }
 
         [HttpPost]
