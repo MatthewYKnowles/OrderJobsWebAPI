@@ -12,9 +12,9 @@ namespace OrderJobs.Web.Controllers
     {
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public string Get()
         {
-            return new string[] { "value1", "value2" };
+            return "";
         }
 
         // GET api/values/5

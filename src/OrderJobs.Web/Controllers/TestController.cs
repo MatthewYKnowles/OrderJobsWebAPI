@@ -40,9 +40,13 @@ namespace OrderJobs.Web.Controllers
         {
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{command}")]
+        public void Delete(string command)
         {
+            if (command == "delete")
+            {
+                _testCaseDatabase.Delete();
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace OrderJobs.Web
@@ -7,6 +8,7 @@ namespace OrderJobs.Web
     {
         void InsertTestCase(TestCases testCase);
         IEnumerable<TestCases> GetTestCases();
+        void Delete();
     }
 
     public class TestCaseDatabase : ITestCaseDatabase
@@ -28,6 +30,12 @@ namespace OrderJobs.Web
         public IEnumerable<TestCases> GetTestCases()
         {
             return _collection.Find(_ => true).ToList();
+        }
+
+        public async void Delete()
+        {
+            var filter = new BsonDocument();
+            var result = await _collection.DeleteManyAsync(filter);
         }
     }
 }
