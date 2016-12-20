@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Driver;
+using Moq;
 using NUnit.Framework;
 using OrderJobs.Algorithm;
+using OrderJobs.Web;
 
 namespace OrderJobs.Test
 {
@@ -152,6 +155,15 @@ namespace OrderJobs.Test
         {
             VerifyJobOrder verifyJobOrder = new VerifyJobOrder("a-b|b-c|c-", "Can not resolve circular dependency");
             Assert.That(verifyJobOrder.IsValid(), Is.EqualTo(false));
+        }
+    }
+
+    public class MockTests
+    {
+        [Test]
+        public void FirstTest()
+        {
+            Mock<ITestCaseDatabase> mockTestCaseDatabase = new Mock<ITestCaseDatabase>();
         }
     }
 }
