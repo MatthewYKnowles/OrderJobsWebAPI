@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using OrderJobs.Algorithm;
-using MongoDB.Driver;
-
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace OrderJobs.Web.Controllers
 {
@@ -43,7 +34,7 @@ namespace OrderJobs.Web.Controllers
         [HttpDelete("{command}")]
         public void Delete(string command)
         {
-            if (command == "delete")
+            if (command == "all")
             {
                 _testCaseDatabase.Delete();
             }

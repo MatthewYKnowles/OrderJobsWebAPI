@@ -55,15 +55,11 @@ namespace OrderJobs.Algorithm
             {
                 return CheckIfJobDependsOnItself();
             }
-            else if (JobsToOrderMightHaveCircularDependency())
+            if (JobsToOrderMightHaveCircularDependency())
             {
                 return CheckIfCircularDependency();
             }
-            else if (NoJobsOrOrderedJobs())
-            {
-                return true;
-            }
-            return false;
+            return NoJobsOrOrderedJobs();
         }
 
         private bool JobNotAdded()
