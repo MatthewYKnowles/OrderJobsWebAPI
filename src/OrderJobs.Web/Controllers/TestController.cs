@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 
 namespace OrderJobs.Web.Controllers
 {
@@ -15,7 +16,7 @@ namespace OrderJobs.Web.Controllers
         }
 
         [HttpGet]
-        public string Get([FromQuery]string url)
+        public Dictionary<int, TestCaseValidation> Get([FromQuery]string url)
         {
             return _orderJobsPassFail.GetOrderedJobsPassFailResults(url).Result;
         }

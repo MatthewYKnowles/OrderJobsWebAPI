@@ -16,9 +16,10 @@ namespace OrderJobs.Web
             _httpClient = httpClient;
         }
 
-        public async Task<string> GetOrderedJobsPassFailResults(string url)
+        public async Task<Dictionary<int, TestCaseValidation>> GetOrderedJobsPassFailResults(string url)
         {
-            string jobs = "";
+            int count = 1;
+            Dictionary<int, TestCaseValidation> dictionary = new Dictionary<int, TestCaseValidation>();
             IEnumerable<TestCases> testCaseList = _testCaseDatabase.GetTestCases();
             foreach (var testCase in testCaseList)
             {
@@ -26,9 +27,25 @@ namespace OrderJobs.Web
                 string jobOrdering = await response.Content.ReadAsStringAsync();
                 VerifyJobOrder verifyJobOrder = new VerifyJobOrder(testCase.TestCase, jobOrdering);
                 bool passOrFail = verifyJobOrder.IsValid();
-                jobs += testCase.TestCase + " -> " + jobOrdering + " : " + passOrFail + "\n";
+                TestCaseValidation testCaseValidation = new TestCaseValidation(testCase.TestCase, jobOrdering, passOrFail);
+                dictionary.Add(count, testCaseValidation);
+                count++;
             }
-            return jobs;
+            return dictionary;
+        }
+    }
+
+    public class TestCaseValidation
+    {
+        public string testCase { get; }
+        public string output { get; }
+        public string result { get; }
+
+        public TestCaseValidation(string TestCase, string jobOrdering, bool passOrFail)
+        {
+            testCase = TestCase;
+            output = jobOrdering;
+            result = passOrFail ? "PASS" : "FAIL";
         }
     }
 }
