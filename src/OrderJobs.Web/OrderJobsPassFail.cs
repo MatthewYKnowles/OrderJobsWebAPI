@@ -23,15 +23,20 @@ namespace OrderJobs.Web
             IEnumerable<TestCases> testCaseList = _testCaseDatabase.GetTestCases();
             foreach (var testCase in testCaseList)
             {
-                HttpResponseMessage response = await _httpClient.GetAsync(url + testCase.TestCase);
-                string jobOrdering = await response.Content.ReadAsStringAsync();
-                VerifyJobOrder verifyJobOrder = new VerifyJobOrder(testCase.TestCase, jobOrdering);
-                bool passOrFail = verifyJobOrder.IsValid();
-                TestCaseValidation testCaseValidation = new TestCaseValidation(testCase.TestCase, jobOrdering, passOrFail);
+                var testCaseValidation = await GetTestCaseValidation(url, testCase);
                 dictionary.Add(count, testCaseValidation);
                 count++;
             }
             return dictionary;
+        }
+
+        private async Task<TestCaseValidation> GetTestCaseValidation(string url, TestCases testCase)
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync(url + testCase.TestCase);
+            string jobOrdering = await response.Content.ReadAsStringAsync();
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder(testCase.TestCase, jobOrdering);
+            bool passOrFail = verifyJobOrder.IsValid();
+            return new TestCaseValidation(testCase.TestCase, jobOrdering, passOrFail);
         }
     }
 
