@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using Moq;
@@ -164,6 +165,41 @@ namespace OrderJobs.Test
         public void FirstTest()
         {
             Mock<ITestCaseDatabase> mockTestCaseDatabase = new Mock<ITestCaseDatabase>();
+            Mock<IHttpClient> mockHttpClient = new Mock<IHttpClient>();
+            var orderJobsPassFail = new OrderJobsPassFail(mockTestCaseDatabase.Object, mockHttpClient.Object);
+            mockTestCaseDatabase.Setup(x => x.GetTestCases()).Returns(() => new List<TestCases>
+                { new TestCases {TestCase = "a-|b-"}});
+            mockHttpClient.Setup(x => x.GetAsync(It.IsAny<string>())).ReturnsAsync(new HttpResponseMessage
+                { Content = new FormUrlEncodedContent(new[]
+                { new KeyValuePair<string, string>("test", "test") })});
+
+            var testCaseValidations = orderJobsPassFail.GetOrderedJobsPassFailResults("http://test/").Result;
+
+            mockHttpClient.Verify(x => x.GetAsync("http://test/a-|b-"));
+            //mockHttpClient.Verify(x => x.GetAsync("http://test/b-|a-"));
+        }
+
+        [Test]
+        public void FirstTest2()
+        {
+            Mock<ITestCaseDatabase> mockTestCaseDatabase = new Mock<ITestCaseDatabase>();
+            Mock<IHttpClient> mockHttpClient = new Mock<IHttpClient>();
+            var orderJobsPassFail = new OrderJobsPassFail(mockTestCaseDatabase.Object, mockHttpClient.Object);
+            mockTestCaseDatabase.Setup(x => x.GetTestCases()).Returns(() => new List<TestCases>
+                { new TestCases {TestCase = "a-|b-"}});
+            mockHttpClient.Setup(x => x.GetAsync(It.IsAny<string>())).ReturnsAsync(new HttpResponseMessage
+            {
+                Content = new StringContent("ab")
+            });
+
+            var testCaseValidations = orderJobsPassFail.GetOrderedJobsPassFailResults("http://test/").Result;
+
+            Assert.That(testCaseValidations, 
+                Is.EqualTo(new Dictionary<int, TestCaseValidation>
+                {
+                    { 1, new TestCaseValidation("a-|b-", "ab", true)},
+                    { 2, new TestCaseValidation("b-|a-", "ab", true)}
+                }));
         }
     }
 }
