@@ -7,18 +7,20 @@ namespace OrderJobs.Algorithm
 {
     public class JobPermutations
     {
+        private List<string> permutationsFromHeaps = new List<string>();
         public List<string> GetPermutatio(string jobList)
         {
-            List<string> permutations = new List<string> {jobList};
-            if (jobList.Length > 2)
+            if (jobList.Length <= 2)
+            {
+                permutationsFromHeaps.Add(jobList);
+            }
+            else
             {
                 string[] jobs = jobList.Split('|');
-                Swap(jobs, 0, 1);
-                string job2 = string.Join("|", jobs);
-                permutations.Add(job2);
+                Permute(jobs, jobs.Length);
+
             }
-            
-            return permutations;
+            return permutationsFromHeaps;
         }
 
         public void Swap(string[] list, int i, int j)
@@ -26,6 +28,29 @@ namespace OrderJobs.Algorithm
             var t = list[i];
             list[i] = list[j];
             list[j] = t;
+        }
+
+        public void Permute(string[] list, int n)
+        {
+            if (n == 1)
+            {
+                permutationsFromHeaps.Add(string.Join("|", list));
+            }
+            else
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    Permute(list, n-1);
+                    if (n % 2 == 1)
+                    {
+                        Swap(list, 0, n - 1);
+                    }
+                    else
+                    {
+                        Swap(list, i, n-1);
+                    }
+                }
+            }
         }
     }
 }

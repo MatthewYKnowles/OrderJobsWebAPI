@@ -176,6 +176,13 @@ namespace OrderJobs.Test
             List<string> permutations = new List<string>() {"a-|b-a", "b-a|a-"};
             Assert.That(jobPermutations.GetPermutatio("a-|b-a"), Is.EqualTo(permutations));
         }
+        [Test]
+        public void ThreeJobPermutations()
+        {
+            var jobPermutations = new JobPermutations();
+            List<string> permutations = new List<string>() {"a-|b-a|c-a", "b-a|a-|c-a", "c-a|a-|b-a", "a-|c-a|b-a", "b-a|c-a|a-", "c-a|b-a|a-"};
+            Assert.That(jobPermutations.GetPermutatio("a-|b-a|c-a"), Is.EqualTo(permutations));
+        }
     }
 
     [TestFixture]
