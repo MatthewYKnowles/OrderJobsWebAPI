@@ -167,14 +167,14 @@ namespace OrderJobs.Test
         {
             var jobPermutations = new JobPermutations();
             List<string> permutations = new List<string>() {"a-"};
-            Assert.That(jobPermutations.GetPermutations("a-"), Is.EqualTo(permutations));
+            Assert.That(jobPermutations.GetPermutatio("a-"), Is.EqualTo(permutations));
         }
         [Test]
         public void TwoJobPermutations()
         {
             var jobPermutations = new JobPermutations();
             List<string> permutations = new List<string>() {"a-|b-a", "b-a|a-"};
-            Assert.That(jobPermutations.GetPermutations("a-|b-a"), Is.EqualTo(permutations));
+            Assert.That(jobPermutations.GetPermutatio("a-|b-a"), Is.EqualTo(permutations));
         }
     }
 
