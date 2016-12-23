@@ -18,25 +18,33 @@ namespace OrderJobs.Web
 
         public async Task<Dictionary<int, TestCaseValidation>> GetOrderedJobsPassFailResults(string url)
         {
+            string testSuiteResult = "PASS";
             int count = 1;
             Dictionary<int, TestCaseValidation> dictionary = new Dictionary<int, TestCaseValidation>();
             IEnumerable<TestCases> testCaseList = _testCaseDatabase.GetTestCases();
-            foreach (var testCase in testCaseList)
+            foreach (TestCases testCase in testCaseList)
             {
-                var testCaseValidation = await GetTestCaseValidation(url, testCase);
-                dictionary.Add(count, testCaseValidation);
-                count++;
+                string testCaseResult = "PASS";
+                List<TestCaseValidation> testCaseResults = new List<TestCaseValidation>();
+                var jobPermutations = new JobPermutations();
+                List<string> testCasePermutationsList = jobPermutations.GetPermutations(testCase.TestCase);
+                foreach (string testCasePermutation in testCasePermutationsList)
+                {
+                    var testCaseValidation = await GetTestCaseValidation(url, testCasePermutation);
+                    dictionary.Add(count, testCaseValidation);
+                    count++;
+                }
             }
             return dictionary;
         }
 
-        private async Task<TestCaseValidation> GetTestCaseValidation(string url, TestCases testCase)
+        private async Task<TestCaseValidation> GetTestCaseValidation(string url, string testCase)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(url + testCase.TestCase);
+            HttpResponseMessage response = await _httpClient.GetAsync(url + testCase);
             string jobOrdering = await response.Content.ReadAsStringAsync();
-            VerifyJobOrder verifyJobOrder = new VerifyJobOrder(testCase.TestCase, jobOrdering);
+            VerifyJobOrder verifyJobOrder = new VerifyJobOrder(testCase, jobOrdering);
             bool passOrFail = verifyJobOrder.IsValid();
-            return new TestCaseValidation(testCase.TestCase, jobOrdering, passOrFail);
+            return new TestCaseValidation(testCase, jobOrdering, passOrFail);
         }
     }
 
@@ -53,17 +61,10 @@ namespace OrderJobs.Web
             result = passOrFail ? "PASS" : "FAIL";
         }
 
-        protected bool Equals(TestCaseValidation other)
-        {
-            return string.Equals(testCase, other.testCase) && string.Equals(output, other.output) && string.Equals(result, other.result);
-        }
-
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((TestCaseValidation) obj);
+            TestCaseValidation testCaseObject = (TestCaseValidation) obj;
+            return string.Equals(testCase, testCaseObject.testCase) && string.Equals(output, testCaseObject.output) && string.Equals(result, testCaseObject.result);
         }
     }
 }

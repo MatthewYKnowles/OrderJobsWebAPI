@@ -163,25 +163,32 @@ namespace OrderJobs.Test
     public class PermutationTests
     {
         [Test]
+        public void NoJobPermutations()
+        {
+            var jobPermutations = new JobPermutations();
+            List<string> permutations = new List<string> { "" };
+            Assert.That(jobPermutations.GetPermutations(""), Is.EqualTo(permutations));
+        }
+        [Test]
         public void OneJobPermutations()
         {
             var jobPermutations = new JobPermutations();
-            List<string> permutations = new List<string>() {"a-"};
-            Assert.That(jobPermutations.GetPermutatio("a-"), Is.EqualTo(permutations));
+            List<string> permutations = new List<string> {"a-"};
+            Assert.That(jobPermutations.GetPermutations("a-"), Is.EqualTo(permutations));
         }
         [Test]
         public void TwoJobPermutations()
         {
             var jobPermutations = new JobPermutations();
-            List<string> permutations = new List<string>() {"a-|b-a", "b-a|a-"};
-            Assert.That(jobPermutations.GetPermutatio("a-|b-a"), Is.EqualTo(permutations));
+            List<string> permutations = new List<string> {"a-|b-a", "b-a|a-"};
+            Assert.That(jobPermutations.GetPermutations("a-|b-a"), Is.EqualTo(permutations));
         }
         [Test]
         public void ThreeJobPermutations()
         {
             var jobPermutations = new JobPermutations();
-            List<string> permutations = new List<string>() {"a-|b-a|c-a", "b-a|a-|c-a", "c-a|a-|b-a", "a-|c-a|b-a", "b-a|c-a|a-", "c-a|b-a|a-"};
-            Assert.That(jobPermutations.GetPermutatio("a-|b-a|c-a"), Is.EqualTo(permutations));
+            List<string> permutations = new List<string> {"a-|b-a|c-a", "b-a|a-|c-a", "c-a|a-|b-a", "a-|c-a|b-a", "b-a|c-a|a-", "c-a|b-a|a-"};
+            Assert.That(jobPermutations.GetPermutations("a-|b-a|c-a"), Is.EqualTo(permutations));
         }
     }
 
@@ -203,7 +210,7 @@ namespace OrderJobs.Test
             var testCaseValidations = orderJobsPassFail.GetOrderedJobsPassFailResults("http://test/").Result;
 
             mockHttpClient.Verify(x => x.GetAsync("http://test/a-|b-"));
-            //mockHttpClient.Verify(x => x.GetAsync("http://test/b-|a-"));
+            mockHttpClient.Verify(x => x.GetAsync("http://test/b-|a-"));
         }
 
         [Test]
@@ -225,7 +232,7 @@ namespace OrderJobs.Test
                 Is.EqualTo(new Dictionary<int, TestCaseValidation>
                 {
                     { 1, new TestCaseValidation("a-|b-", "ab", true)},
-                    //{ 2, new TestCaseValidation("b-|a-", "ab", true)}
+                    { 2, new TestCaseValidation("b-|a-", "ab", true)}
                 }));
         }
     }
