@@ -159,6 +159,26 @@ namespace OrderJobs.Test
         }
     }
 
+    [TestFixture]
+    public class PermutationTests
+    {
+        [Test]
+        public void OneJobPermutations()
+        {
+            var jobPermutations = new JobPermutations();
+            List<string> permutations = new List<string>() {"a-"};
+            Assert.That(jobPermutations.GetPermutations("a-"), Is.EqualTo(permutations));
+        }
+        [Test]
+        public void TwoJobPermutations()
+        {
+            var jobPermutations = new JobPermutations();
+            List<string> permutations = new List<string>() {"a-|b-a", "b-a|a-"};
+            Assert.That(jobPermutations.GetPermutations("a-|b-a"), Is.EqualTo(permutations));
+        }
+    }
+
+    [TestFixture]
     public class MockTests
     {
         [Test]
@@ -198,7 +218,7 @@ namespace OrderJobs.Test
                 Is.EqualTo(new Dictionary<int, TestCaseValidation>
                 {
                     { 1, new TestCaseValidation("a-|b-", "ab", true)},
-                    { 2, new TestCaseValidation("b-|a-", "ab", true)}
+                    //{ 2, new TestCaseValidation("b-|a-", "ab", true)}
                 }));
         }
     }

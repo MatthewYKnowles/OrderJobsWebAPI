@@ -65,16 +65,5 @@ namespace OrderJobs.Web
             if (obj.GetType() != this.GetType()) return false;
             return Equals((TestCaseValidation) obj);
         }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = (testCase != null ? testCase.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (output != null ? output.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (result != null ? result.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
     }
 }
