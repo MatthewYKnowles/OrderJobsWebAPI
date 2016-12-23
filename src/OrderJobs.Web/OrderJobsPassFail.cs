@@ -16,9 +16,10 @@ namespace OrderJobs.Web
             _httpClient = httpClient;
         }
 
-        public async Task<Dictionary<int, TestCaseValidation>> GetOrderedJobsPassFailResults(string url)
+        public async Task<TestSuiteResults> GetOrderedJobsPassFailResults(string url)
         {
             string testSuiteResult = "PASS";
+            List<TestCasePermutations> testCasePermutations = new List<TestCasePermutations>();
             int count = 1;
             Dictionary<int, TestCaseValidation> dictionary = new Dictionary<int, TestCaseValidation>();
             IEnumerable<TestCases> testCaseList = _testCaseDatabase.GetTestCases();
@@ -31,11 +32,13 @@ namespace OrderJobs.Web
                 foreach (string testCasePermutation in testCasePermutationsList)
                 {
                     var testCaseValidation = await GetTestCaseValidation(url, testCasePermutation);
-                    dictionary.Add(count, testCaseValidation);
+                    testCaseResults.Add(testCaseValidation);
                     count++;
                 }
+                testCasePermutations.Add(new TestCasePermutations(testCase.TestCase, testCaseResult, testCaseResults));
             }
-            return dictionary;
+            TestSuiteResults testSuiteResults = new TestSuiteResults(testSuiteResult, testCasePermutations);
+            return testSuiteResults;
         }
 
         private async Task<TestCaseValidation> GetTestCaseValidation(string url, string testCase)
@@ -44,7 +47,19 @@ namespace OrderJobs.Web
             string jobOrdering = await response.Content.ReadAsStringAsync();
             VerifyJobOrder verifyJobOrder = new VerifyJobOrder(testCase, jobOrdering);
             bool passOrFail = verifyJobOrder.IsValid();
-            return new TestCaseValidation(testCase, jobOrdering, passOrFail);
+            return new TestCaseValidation(testCase, passOrFail);
+        }
+    }
+
+    public class TestSuiteResults
+    {
+        public string result { get; }
+        public List<TestCasePermutations> results { get; }
+
+        public TestSuiteResults(string Result, List<TestCasePermutations> Results )
+        {
+            result = Result;
+            results = Results;
         }
     }
 
@@ -54,10 +69,9 @@ namespace OrderJobs.Web
         public string output { get; }
         public string result { get; }
 
-        public TestCaseValidation(string TestCase, string jobOrdering, bool passOrFail)
+        public TestCaseValidation(string TestCase, bool passOrFail)
         {
             testCase = TestCase;
-            output = jobOrdering;
             result = passOrFail ? "PASS" : "FAIL";
         }
 
@@ -65,6 +79,20 @@ namespace OrderJobs.Web
         {
             TestCaseValidation testCaseObject = (TestCaseValidation) obj;
             return string.Equals(testCase, testCaseObject.testCase) && string.Equals(output, testCaseObject.output) && string.Equals(result, testCaseObject.result);
+        }
+    }
+
+    public class TestCasePermutations
+    {
+        public string testCase { get; set; }
+        public string result { get; set; }
+        public List<TestCaseValidation> results { get; set; }
+
+        public TestCasePermutations(string TestCase, string Result, List<TestCaseValidation> Results)
+        {
+            testCase = TestCase;
+            result = Result;
+            results = Results;
         }
     }
 }

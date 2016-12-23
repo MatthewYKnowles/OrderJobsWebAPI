@@ -16,7 +16,7 @@ namespace OrderJobs.Web.Controllers
         }
 
         [HttpGet]
-        public Dictionary<int, TestCaseValidation> Get([FromQuery]string url)
+        public TestSuiteResults Get([FromQuery]string url)
         {
             return _orderJobsPassFail.GetOrderedJobsPassFailResults(url).Result;
         }
