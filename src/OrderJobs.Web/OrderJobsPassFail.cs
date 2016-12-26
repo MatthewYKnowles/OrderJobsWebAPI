@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using OrderJobs.Algorithm;
@@ -18,14 +19,10 @@ namespace OrderJobs.Web
 
         public async Task<TestSuiteResults> GetOrderedJobsPassFailResults(string url)
         {
-            string testSuiteResult = "PASS";
             List<TestCasePermutationResults> testCasePermutations = new List<TestCasePermutationResults>();
-            int count = 1;
-            Dictionary<int, TestCaseValidation> dictionary = new Dictionary<int, TestCaseValidation>();
             IEnumerable<TestCases> testCaseList = _testCaseDatabase.GetTestCases();
             foreach (TestCases testCase in testCaseList)
             {
-                string testCaseResult = "PASS";
                 List<TestCaseValidation> testCaseResults = new List<TestCaseValidation>();
                 var jobPermutations = new JobPermutations();
                 List<string> testCasePermutationsList = jobPermutations.GetPermutations(testCase.TestCase);
@@ -33,11 +30,10 @@ namespace OrderJobs.Web
                 {
                     var testCaseValidation = await GetTestCaseValidation(url, testCasePermutation);
                     testCaseResults.Add(testCaseValidation);
-                    count++;
                 }
-                testCasePermutations.Add(new TestCasePermutationResults(testCase.TestCase, testCaseResult, testCaseResults));
+                testCasePermutations.Add(new TestCasePermutationResults(testCase.TestCase, testCaseResults));
             }
-            TestSuiteResults testSuiteResults = new TestSuiteResults(testSuiteResult, testCasePermutations);
+            TestSuiteResults testSuiteResults = new TestSuiteResults(testCasePermutations);
             return testSuiteResults;
         }
 
@@ -56,10 +52,10 @@ namespace OrderJobs.Web
         public string result { get; }
         public List<TestCasePermutationResults> results { get; }
 
-        public TestSuiteResults(string Result, List<TestCasePermutationResults> Results )
+        public TestSuiteResults(List<TestCasePermutationResults> Results )
         {
-            result = Result;
             results = Results;
+            result = Results.Any(x => x.result == "FAIL") ? "FAIL" : "PASS";
         }
         public override bool Equals(object obj)
         {
@@ -92,11 +88,11 @@ namespace OrderJobs.Web
         public string result { get; set; }
         public List<TestCaseValidation> results { get; set; }
 
-        public TestCasePermutationResults(string TestCase, string Result, List<TestCaseValidation> Results)
+        public TestCasePermutationResults(string TestCase, List<TestCaseValidation> Results)
         {
             testCase = TestCase;
-            result = Result;
             results = Results;
+            result = Results.Any(x => x.result == "FAIL") ? "FAIL" : "PASS";
         }
 
         public override bool Equals(object obj)
