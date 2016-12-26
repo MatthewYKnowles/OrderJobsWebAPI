@@ -19,7 +19,7 @@ namespace OrderJobs.Web
         public async Task<TestSuiteResults> GetOrderedJobsPassFailResults(string url)
         {
             string testSuiteResult = "PASS";
-            List<TestCasePermutations> testCasePermutations = new List<TestCasePermutations>();
+            List<TestCasePermutationResults> testCasePermutations = new List<TestCasePermutationResults>();
             int count = 1;
             Dictionary<int, TestCaseValidation> dictionary = new Dictionary<int, TestCaseValidation>();
             IEnumerable<TestCases> testCaseList = _testCaseDatabase.GetTestCases();
@@ -35,7 +35,7 @@ namespace OrderJobs.Web
                     testCaseResults.Add(testCaseValidation);
                     count++;
                 }
-                testCasePermutations.Add(new TestCasePermutations(testCase.TestCase, testCaseResult, testCaseResults));
+                testCasePermutations.Add(new TestCasePermutationResults(testCase.TestCase, testCaseResult, testCaseResults));
             }
             TestSuiteResults testSuiteResults = new TestSuiteResults(testSuiteResult, testCasePermutations);
             return testSuiteResults;
@@ -54,19 +54,23 @@ namespace OrderJobs.Web
     public class TestSuiteResults
     {
         public string result { get; }
-        public List<TestCasePermutations> results { get; }
+        public List<TestCasePermutationResults> results { get; }
 
-        public TestSuiteResults(string Result, List<TestCasePermutations> Results )
+        public TestSuiteResults(string Result, List<TestCasePermutationResults> Results )
         {
             result = Result;
             results = Results;
+        }
+        public override bool Equals(object obj)
+        {
+            TestSuiteResults testCaseObject = (TestSuiteResults)obj;
+            return string.Equals(results, testCaseObject.results) && string.Equals(result, testCaseObject.result);
         }
     }
 
     public class TestCaseValidation
     {
         public string testCase { get; }
-        public string output { get; }
         public string result { get; }
 
         public TestCaseValidation(string TestCase, bool passOrFail)
@@ -78,21 +82,27 @@ namespace OrderJobs.Web
         public override bool Equals(object obj)
         {
             TestCaseValidation testCaseObject = (TestCaseValidation) obj;
-            return string.Equals(testCase, testCaseObject.testCase) && string.Equals(output, testCaseObject.output) && string.Equals(result, testCaseObject.result);
+            return string.Equals(testCase, testCaseObject.testCase) && string.Equals(result, testCaseObject.result);
         }
     }
 
-    public class TestCasePermutations
+    public class TestCasePermutationResults
     {
         public string testCase { get; set; }
         public string result { get; set; }
         public List<TestCaseValidation> results { get; set; }
 
-        public TestCasePermutations(string TestCase, string Result, List<TestCaseValidation> Results)
+        public TestCasePermutationResults(string TestCase, string Result, List<TestCaseValidation> Results)
         {
             testCase = TestCase;
             result = Result;
             results = Results;
+        }
+
+        public override bool Equals(object obj)
+        {
+            TestCasePermutationResults testCaseObject = (TestCasePermutationResults)obj;
+            return string.Equals(testCase, testCaseObject.testCase) && string.Equals(result, testCaseObject.result) && string.Equals(results, testCaseObject.results);
         }
     }
 }

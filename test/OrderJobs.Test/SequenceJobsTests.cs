@@ -202,10 +202,12 @@ namespace OrderJobs.Test
             Mock<IHttpClient> mockHttpClient = new Mock<IHttpClient>();
             var orderJobsPassFail = new OrderJobsPassFail(mockTestCaseDatabase.Object, mockHttpClient.Object);
             mockTestCaseDatabase.Setup(x => x.GetTestCases()).Returns(() => new List<TestCases>
-                { new TestCases {TestCase = "a-|b-"}});
+                {new TestCases {TestCase = "a-|b-"}});
             mockHttpClient.Setup(x => x.GetAsync(It.IsAny<string>())).ReturnsAsync(new HttpResponseMessage
-                { Content = new FormUrlEncodedContent(new[]
-                { new KeyValuePair<string, string>("test", "test") })});
+            {
+                Content = new FormUrlEncodedContent(new[]
+                    {new KeyValuePair<string, string>("test", "test")})
+            });
 
             var testCaseValidations = orderJobsPassFail.GetOrderedJobsPassFailResults("http://test/").Result;
 
@@ -220,20 +222,25 @@ namespace OrderJobs.Test
             Mock<IHttpClient> mockHttpClient = new Mock<IHttpClient>();
             var orderJobsPassFail = new OrderJobsPassFail(mockTestCaseDatabase.Object, mockHttpClient.Object);
             mockTestCaseDatabase.Setup(x => x.GetTestCases()).Returns(() => new List<TestCases>
-                { new TestCases {TestCase = "a-|b-"}});
+                {new TestCases {TestCase = "a-|b-"}});
             mockHttpClient.Setup(x => x.GetAsync(It.IsAny<string>())).ReturnsAsync(new HttpResponseMessage
             {
                 Content = new StringContent("ab")
             });
 
             var testCaseValidations = orderJobsPassFail.GetOrderedJobsPassFailResults("http://test/").Result;
+            TestCaseValidation testCaseOne = new TestCaseValidation("a-|b-", true);
+            TestCaseValidation testCaseTwo = new TestCaseValidation("b-|a-", true);
+            List<TestCaseValidation> testCaseValidationList = new List<TestCaseValidation>() {testCaseOne, testCaseTwo};
+            List<TestCasePermutationResults> testCasePermutations = new List<TestCasePermutationResults>();
+            TestCasePermutationResults testCasePermutationResults = new TestCasePermutationResults("a-|b-", "PASS",
+                testCaseValidationList);
+            testCasePermutations.Add(testCasePermutationResults);
+            TestSuiteResults testSuiteResults = new TestSuiteResults("PASS", testCasePermutations);
 
-            Assert.That(testCaseValidations, 
-                Is.EqualTo(new Dictionary<int, TestCaseValidation>
-                {
-                    { 1, new TestCaseValidation("a-|b-", "ab", true)},
-                    { 2, new TestCaseValidation("b-|a-", "ab", true)}
-                }));
+            //Assert.That(testCaseValidations, Is.EqualTo(testSuiteResults));
+            Assert.That(testCaseValidations.results[0].results[0], Is.EqualTo(testSuiteResults.results[0].results[0]));
+            Assert.That(testCaseValidations.results[0].results[1], Is.EqualTo(testSuiteResults.results[0].results[1]));
         }
     }
 }
