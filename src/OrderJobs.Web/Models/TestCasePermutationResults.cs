@@ -15,11 +15,5 @@ namespace OrderJobs.Web
             results = Results;
             result = Results.Any(x => x.result == "FAIL") ? "FAIL" : "PASS";
         }
-
-        public override bool Equals(object obj)
-        {
-            TestCasePermutationResults testCaseObject = (TestCasePermutationResults)obj;
-            return string.Equals(testCase, testCaseObject.testCase) && string.Equals(result, testCaseObject.result) && object.Equals(results, testCaseObject.results);
-        }
     }
 }

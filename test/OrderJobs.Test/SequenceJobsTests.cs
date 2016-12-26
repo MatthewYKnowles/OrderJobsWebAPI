@@ -264,5 +264,55 @@ namespace OrderJobs.Test
             Assert.That(testCaseValidations.results[0].result, Is.EqualTo(testCaseSuite.results[0].result));
             Assert.That(testCaseValidations.result, Is.EqualTo(testCaseSuite.result));
         }
+        [Test]
+        public void FinalObjectsAreTheSame()
+        {
+            Mock<ITestCaseDatabase> mockTestCaseDatabase = new Mock<ITestCaseDatabase>();
+            Mock<IHttpClient> mockHttpClient = new Mock<IHttpClient>();
+            var orderJobsPassFail = new OrderJobsPassFail(mockTestCaseDatabase.Object, mockHttpClient.Object);
+            mockTestCaseDatabase.Setup(x => x.GetTestCases()).Returns(() => new List<TestCases>
+                {new TestCases {TestCase = "a-b|b-"}});
+            mockHttpClient.Setup(x => x.GetAsync(It.IsAny<string>())).ReturnsAsync(new HttpResponseMessage
+            {
+                Content = new StringContent("ab")
+            });
+
+            var testCaseValidations = orderJobsPassFail.GetTestCaseSuite("http://test/").Result;
+            TestCaseValidation testCaseOne = new TestCaseValidation("a-b|b-", false);
+            TestCaseValidation testCaseTwo = new TestCaseValidation("b-|a-b", false);
+            List<TestCaseValidation> testCaseValidationList = new List<TestCaseValidation>() {testCaseOne, testCaseTwo};
+            List<TestCasePermutationResults> testCasePermutations = new List<TestCasePermutationResults>();
+            TestCasePermutationResults testCasePermutationResults = new TestCasePermutationResults("a-|b-",
+                testCaseValidationList);
+            testCasePermutations.Add(testCasePermutationResults);
+            TestCaseSuite testCaseSuite = new TestCaseSuite(testCasePermutations);
+
+            Assert.That(testCaseValidations.results[0].results, Is.EqualTo(testCaseSuite.results[0].results));
+        }
+        [Test]
+        public void TestCasesAreTheSame()
+        {
+            Mock<ITestCaseDatabase> mockTestCaseDatabase = new Mock<ITestCaseDatabase>();
+            Mock<IHttpClient> mockHttpClient = new Mock<IHttpClient>();
+            var orderJobsPassFail = new OrderJobsPassFail(mockTestCaseDatabase.Object, mockHttpClient.Object);
+            mockTestCaseDatabase.Setup(x => x.GetTestCases()).Returns(() => new List<TestCases>
+                {new TestCases {TestCase = "a-b|b-"}});
+            mockHttpClient.Setup(x => x.GetAsync(It.IsAny<string>())).ReturnsAsync(new HttpResponseMessage
+            {
+                Content = new StringContent("ab")
+            });
+
+            var testCaseValidations = orderJobsPassFail.GetTestCaseSuite("http://test/").Result;
+            TestCaseValidation testCaseOne = new TestCaseValidation("a-b|b-", false);
+            TestCaseValidation testCaseTwo = new TestCaseValidation("b-|a-b", false);
+            List<TestCaseValidation> testCaseValidationList = new List<TestCaseValidation>() {testCaseOne, testCaseTwo};
+            List<TestCasePermutationResults> testCasePermutations = new List<TestCasePermutationResults>();
+            TestCasePermutationResults testCasePermutationResults = new TestCasePermutationResults("a-b|b-",
+                testCaseValidationList);
+            testCasePermutations.Add(testCasePermutationResults);
+            TestCaseSuite testCaseSuite = new TestCaseSuite(testCasePermutations);
+
+            Assert.That(testCaseValidations.results[0].testCase, Is.EqualTo(testCaseSuite.results[0].testCase));
+        }
     }
 }
