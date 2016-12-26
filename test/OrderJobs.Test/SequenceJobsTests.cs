@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
-using MongoDB.Driver;
 using Moq;
 using NUnit.Framework;
 using OrderJobs.Algorithm;
@@ -196,7 +192,7 @@ namespace OrderJobs.Test
     public class MockTests
     {
         [Test]
-        public void FirstTest()
+        public void SendBothPermutationsThroughHttpClient()
         {
             Mock<ITestCaseDatabase> mockTestCaseDatabase = new Mock<ITestCaseDatabase>();
             Mock<IHttpClient> mockHttpClient = new Mock<IHttpClient>();
@@ -209,14 +205,14 @@ namespace OrderJobs.Test
                     {new KeyValuePair<string, string>("test", "test")})
             });
 
-            var testCaseValidations = orderJobsPassFail.GetOrderedJobsPassFailResults("http://test/").Result;
+            var testCaseValidations = orderJobsPassFail.GetTestCaseSuite("http://test/").Result;
 
             mockHttpClient.Verify(x => x.GetAsync("http://test/a-|b-"));
             mockHttpClient.Verify(x => x.GetAsync("http://test/b-|a-"));
         }
 
         [Test]
-        public void FirstTest2()
+        public void BothPermutationsOfATestCase()
         {
             Mock<ITestCaseDatabase> mockTestCaseDatabase = new Mock<ITestCaseDatabase>();
             Mock<IHttpClient> mockHttpClient = new Mock<IHttpClient>();
@@ -228,7 +224,7 @@ namespace OrderJobs.Test
                 Content = new StringContent("ab")
             });
 
-            var testCaseValidations = orderJobsPassFail.GetOrderedJobsPassFailResults("http://test/").Result;
+            var testCaseValidations = orderJobsPassFail.GetTestCaseSuite("http://test/").Result;
             TestCaseValidation testCaseOne = new TestCaseValidation("a-|b-", true);
             TestCaseValidation testCaseTwo = new TestCaseValidation("b-|a-", true);
             List<TestCaseValidation> testCaseValidationList = new List<TestCaseValidation>() {testCaseOne, testCaseTwo};
@@ -236,14 +232,14 @@ namespace OrderJobs.Test
             TestCasePermutationResults testCasePermutationResults = new TestCasePermutationResults("a-|b-",
                 testCaseValidationList);
             testCasePermutations.Add(testCasePermutationResults);
-            TestSuiteResults testSuiteResults = new TestSuiteResults(testCasePermutations);
+            TestCaseSuite testCaseSuite = new TestCaseSuite(testCasePermutations);
 
-            //Assert.That(testCaseValidations, Is.EqualTo(testSuiteResults));
-            Assert.That(testCaseValidations.results[0].results[0], Is.EqualTo(testSuiteResults.results[0].results[0]));
-            Assert.That(testCaseValidations.results[0].results[1], Is.EqualTo(testSuiteResults.results[0].results[1]));
+            //Assert.That(testCaseValidations, Is.EqualTo(testCaseSuite));
+            Assert.That(testCaseValidations.results[0].results[0], Is.EqualTo(testCaseSuite.results[0].results[0]));
+            Assert.That(testCaseValidations.results[0].results[1], Is.EqualTo(testCaseSuite.results[0].results[1]));
         }
         [Test]
-        public void FirstTest3()
+        public void FailuresMoveUpToTestSuiteLevel()
         {
             Mock<ITestCaseDatabase> mockTestCaseDatabase = new Mock<ITestCaseDatabase>();
             Mock<IHttpClient> mockHttpClient = new Mock<IHttpClient>();
@@ -255,7 +251,7 @@ namespace OrderJobs.Test
                 Content = new StringContent("ab")
             });
 
-            var testCaseValidations = orderJobsPassFail.GetOrderedJobsPassFailResults("http://test/").Result;
+            var testCaseValidations = orderJobsPassFail.GetTestCaseSuite("http://test/").Result;
             TestCaseValidation testCaseOne = new TestCaseValidation("a-b|b-", false);
             TestCaseValidation testCaseTwo = new TestCaseValidation("b-|a-b", false);
             List<TestCaseValidation> testCaseValidationList = new List<TestCaseValidation>() {testCaseOne, testCaseTwo};
@@ -263,10 +259,10 @@ namespace OrderJobs.Test
             TestCasePermutationResults testCasePermutationResults = new TestCasePermutationResults("a-|b-",
                 testCaseValidationList);
             testCasePermutations.Add(testCasePermutationResults);
-            TestSuiteResults testSuiteResults = new TestSuiteResults(testCasePermutations);
+            TestCaseSuite testCaseSuite = new TestCaseSuite(testCasePermutations);
 
-            Assert.That(testCaseValidations.results[0].result, Is.EqualTo(testSuiteResults.results[0].result));
-            Assert.That(testCaseValidations.result, Is.EqualTo(testSuiteResults.result));
+            Assert.That(testCaseValidations.results[0].result, Is.EqualTo(testCaseSuite.results[0].result));
+            Assert.That(testCaseValidations.result, Is.EqualTo(testCaseSuite.result));
         }
     }
 }

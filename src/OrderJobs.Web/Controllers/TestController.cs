@@ -17,9 +17,9 @@ namespace OrderJobs.Web.Controllers
         }
 
         [HttpGet]
-        public TestSuiteResults Get([FromQuery]string url)
+        public TestCaseSuite Get([FromQuery]string url)
         {
-            return _orderJobsPassFail.GetOrderedJobsPassFailResults(url).Result;
+            return _orderJobsPassFail.GetTestCaseSuite(url).Result;
         }
 
         [HttpPost]
