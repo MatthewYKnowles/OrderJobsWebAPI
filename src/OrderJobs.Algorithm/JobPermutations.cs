@@ -45,7 +45,8 @@ namespace OrderJobs.Algorithm
             for (int i = 0; i < n; i++)
             {
                 Permute(list, n - 1);
-                Swap(list, n % 2 == 1 ? 0 : i, n - 1);
+                var indexOfValueToSwap = n % 2 == 0 ? i : 0;
+                Swap(list, indexOfValueToSwap, n - 1);
             }
         }
 

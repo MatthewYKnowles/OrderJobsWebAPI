@@ -16,7 +16,7 @@ namespace OrderJobs.Web
             _httpClient = httpClient;
         }
 
-        public async Task<TestCaseSuite> GetTestCaseSuite(string url)
+        public async Task<TestCaseSuiteResult> GetTestCaseSuite(string url)
         {
             List<TestCasePermutationResults> testCasePermutations = new List<TestCasePermutationResults>();
             IEnumerable<TestCases> testCaseList = _testCaseDatabase.GetTestCases();
@@ -24,7 +24,7 @@ namespace OrderJobs.Web
             {
                 testCasePermutations.Add(await BuildTestCasePermutation(url, testCase.TestCase));
             }
-            return new TestCaseSuite(testCasePermutations);
+            return new TestCaseSuiteResult(testCasePermutations);
         }
 
         private async Task<TestCasePermutationResults> BuildTestCasePermutation(string url, string testCase)

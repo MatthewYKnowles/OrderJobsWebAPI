@@ -3,12 +3,12 @@ using System.Linq;
 
 namespace OrderJobs.Web
 {
-    public class TestCaseSuite
+    public class TestCaseSuiteResult
     {
         public string result { get; }
         public List<TestCasePermutationResults> results { get; }
 
-        public TestCaseSuite(List<TestCasePermutationResults> Results )
+        public TestCaseSuiteResult(List<TestCasePermutationResults> Results )
         {
             results = Results;
             result = Results.Any(x => x.result == "FAIL") ? "FAIL" : "PASS";

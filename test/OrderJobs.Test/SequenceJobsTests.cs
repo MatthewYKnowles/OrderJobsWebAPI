@@ -169,21 +169,21 @@ namespace OrderJobs.Test
         public void OneJobPermutations()
         {
             var jobPermutations = new JobPermutations();
-            List<string> permutations = new List<string> {"a-"};
+            List<string> permutations = new List<string> { "a-" };
             Assert.That(jobPermutations.GetPermutations("a-"), Is.EqualTo(permutations));
         }
         [Test]
         public void TwoJobPermutations()
         {
             var jobPermutations = new JobPermutations();
-            List<string> permutations = new List<string> {"a-|b-a", "b-a|a-"};
+            List<string> permutations = new List<string> { "a-|b-a", "b-a|a-" };
             Assert.That(jobPermutations.GetPermutations("a-|b-a"), Is.EqualTo(permutations));
         }
         [Test]
         public void ThreeJobPermutations()
         {
             var jobPermutations = new JobPermutations();
-            List<string> permutations = new List<string> {"a-|b-a|c-a", "b-a|a-|c-a", "c-a|a-|b-a", "a-|c-a|b-a", "b-a|c-a|a-", "c-a|b-a|a-"};
+            List<string> permutations = new List<string> { "a-|b-a|c-a", "b-a|a-|c-a", "c-a|a-|b-a", "a-|c-a|b-a", "b-a|c-a|a-", "c-a|b-a|a-" };
             Assert.That(jobPermutations.GetPermutations("a-|b-a|c-a"), Is.EqualTo(permutations));
         }
     }
@@ -227,16 +227,16 @@ namespace OrderJobs.Test
             var testCaseValidations = orderJobsPassFail.GetTestCaseSuite("http://test/").Result;
             TestCaseValidation testCaseOne = new TestCaseValidation("a-|b-", true);
             TestCaseValidation testCaseTwo = new TestCaseValidation("b-|a-", true);
-            List<TestCaseValidation> testCaseValidationList = new List<TestCaseValidation>() {testCaseOne, testCaseTwo};
+            List<TestCaseValidation> testCaseValidationList = new List<TestCaseValidation>() { testCaseOne, testCaseTwo };
             List<TestCasePermutationResults> testCasePermutations = new List<TestCasePermutationResults>();
             TestCasePermutationResults testCasePermutationResults = new TestCasePermutationResults("a-|b-",
                 testCaseValidationList);
             testCasePermutations.Add(testCasePermutationResults);
-            TestCaseSuite testCaseSuite = new TestCaseSuite(testCasePermutations);
+            TestCaseSuiteResult testCaseSuiteResult = new TestCaseSuiteResult(testCasePermutations);
 
-            //Assert.That(testCaseValidations, Is.EqualTo(testCaseSuite));
-            Assert.That(testCaseValidations.results[0].results[0], Is.EqualTo(testCaseSuite.results[0].results[0]));
-            Assert.That(testCaseValidations.results[0].results[1], Is.EqualTo(testCaseSuite.results[0].results[1]));
+            //Assert.That(testCaseValidations, Is.EqualTo(testCaseSuiteResult));
+            Assert.That(testCaseValidations.results[0].results[0], Is.EqualTo(testCaseSuiteResult.results[0].results[0]));
+            Assert.That(testCaseValidations.results[0].results[1], Is.EqualTo(testCaseSuiteResult.results[0].results[1]));
         }
         [Test]
         public void FailuresMoveUpToTestSuiteLevel()
@@ -254,15 +254,15 @@ namespace OrderJobs.Test
             var testCaseValidations = orderJobsPassFail.GetTestCaseSuite("http://test/").Result;
             TestCaseValidation testCaseOne = new TestCaseValidation("a-b|b-", false);
             TestCaseValidation testCaseTwo = new TestCaseValidation("b-|a-b", false);
-            List<TestCaseValidation> testCaseValidationList = new List<TestCaseValidation>() {testCaseOne, testCaseTwo};
+            List<TestCaseValidation> testCaseValidationList = new List<TestCaseValidation>() { testCaseOne, testCaseTwo };
             List<TestCasePermutationResults> testCasePermutations = new List<TestCasePermutationResults>();
             TestCasePermutationResults testCasePermutationResults = new TestCasePermutationResults("a-|b-",
                 testCaseValidationList);
             testCasePermutations.Add(testCasePermutationResults);
-            TestCaseSuite testCaseSuite = new TestCaseSuite(testCasePermutations);
+            TestCaseSuiteResult testCaseSuiteResult = new TestCaseSuiteResult(testCasePermutations);
 
-            Assert.That(testCaseValidations.results[0].result, Is.EqualTo(testCaseSuite.results[0].result));
-            Assert.That(testCaseValidations.result, Is.EqualTo(testCaseSuite.result));
+            Assert.That(testCaseValidations.results[0].result, Is.EqualTo(testCaseSuiteResult.results[0].result));
+            Assert.That(testCaseValidations.result, Is.EqualTo(testCaseSuiteResult.result));
         }
         [Test]
         public void FinalObjectsAreTheSame()
@@ -280,14 +280,14 @@ namespace OrderJobs.Test
             var testCaseValidations = orderJobsPassFail.GetTestCaseSuite("http://test/").Result;
             TestCaseValidation testCaseOne = new TestCaseValidation("a-b|b-", false);
             TestCaseValidation testCaseTwo = new TestCaseValidation("b-|a-b", false);
-            List<TestCaseValidation> testCaseValidationList = new List<TestCaseValidation>() {testCaseOne, testCaseTwo};
+            List<TestCaseValidation> testCaseValidationList = new List<TestCaseValidation>() { testCaseOne, testCaseTwo };
             List<TestCasePermutationResults> testCasePermutations = new List<TestCasePermutationResults>();
             TestCasePermutationResults testCasePermutationResults = new TestCasePermutationResults("a-|b-",
                 testCaseValidationList);
             testCasePermutations.Add(testCasePermutationResults);
-            TestCaseSuite testCaseSuite = new TestCaseSuite(testCasePermutations);
+            TestCaseSuiteResult testCaseSuiteResult = new TestCaseSuiteResult(testCasePermutations);
 
-            Assert.That(testCaseValidations.results[0].results, Is.EqualTo(testCaseSuite.results[0].results));
+            Assert.That(testCaseValidations.results[0].results, Is.EqualTo(testCaseSuiteResult.results[0].results));
         }
         [Test]
         public void TestCasesAreTheSame()
@@ -303,16 +303,17 @@ namespace OrderJobs.Test
             });
 
             var testCaseValidations = orderJobsPassFail.GetTestCaseSuite("http://test/").Result;
-            TestCaseValidation testCaseOne = new TestCaseValidation("a-b|b-", false);
-            TestCaseValidation testCaseTwo = new TestCaseValidation("b-|a-b", false);
-            List<TestCaseValidation> testCaseValidationList = new List<TestCaseValidation>() {testCaseOne, testCaseTwo};
-            List<TestCasePermutationResults> testCasePermutations = new List<TestCasePermutationResults>();
-            TestCasePermutationResults testCasePermutationResults = new TestCasePermutationResults("a-b|b-",
-                testCaseValidationList);
-            testCasePermutations.Add(testCasePermutationResults);
-            TestCaseSuite testCaseSuite = new TestCaseSuite(testCasePermutations);
+            var testCaseSuiteResult = new TestCaseSuiteResult(new List<TestCasePermutationResults>
+            {
+                new TestCasePermutationResults("a-b|b-",
+                    new List<TestCaseValidation>
+                    {
+                        new TestCaseValidation("a-b|b-", false),
+                        new TestCaseValidation("b-|a-b", false)
+                    })
+            });
 
-            Assert.That(testCaseValidations.results[0].testCase, Is.EqualTo(testCaseSuite.results[0].testCase));
+            Assert.That(testCaseValidations.results[0].testCase, Is.EqualTo(testCaseSuiteResult.results[0].testCase));
         }
     }
 }
