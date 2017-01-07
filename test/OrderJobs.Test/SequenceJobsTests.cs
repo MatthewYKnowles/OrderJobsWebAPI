@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using MongoDB.Bson.Serialization.Serializers;
 using Moq;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using OrderJobs.Algorithm;
 using OrderJobs.Web;
@@ -185,6 +189,53 @@ namespace OrderJobs.Test
             var jobPermutations = new JobPermutations();
             List<string> permutations = new List<string> { "a-|b-a|c-a", "b-a|a-|c-a", "c-a|a-|b-a", "a-|c-a|b-a", "b-a|c-a|a-", "c-a|b-a|a-" };
             Assert.That(jobPermutations.GetPermutations("a-|b-a|c-a"), Is.EqualTo(permutations));
+        }
+    }
+
+    public class SampleTestCase
+    {
+        public string TestCase { get; set; }
+    }
+
+    [TestFixture]
+    public class IntegrationTests
+    {
+        [Test]
+        public void CheckTwoJobs()
+        {
+            var httpClient = new HttpClient();
+            Task<HttpResponseMessage> response = httpClient.GetAsync("http://localhost:55163/api/values/a-b%7Cb-");
+            response.Wait();
+            Assert.That(response.Result.Content.ReadAsStringAsync().Result, Is.EqualTo("ba"));
+        }
+        [Test]
+        public void ClearDatabaseAndCheckTestCase()
+        {
+            var httpClient = new HttpClient();
+            var deleteResponse = httpClient.DeleteAsync("http://localhost:55163/api/test/all");
+            deleteResponse.Wait();
+            var sampleTestCase = new SampleTestCase {TestCase = "a-|b-"};
+            var testCaseJson = JsonConvert.SerializeObject(sampleTestCase);
+            var content = new StringContent(testCaseJson, Encoding.UTF8, "application/json");
+            var response = httpClient.PostAsync("http://localhost:55163/api/test", content);
+            response.Wait();
+            Task<HttpResponseMessage> testResults = httpClient.GetAsync("http://localhost:55163/api/test?url=http://localhost:55163/api/values/");
+            testResults.Wait();
+            var testCaseSuiteResult = new TestCaseSuiteResult(new List<TestCasePermutationResults>
+            {
+                new TestCasePermutationResults("a-|b-",
+                    new List<TestCaseValidation>
+                    {
+                        new TestCaseValidation("a-|b-", true),
+                        new TestCaseValidation("b-|a-", true)
+                    })
+            });
+            var partialResult = testResults.Result.Content.ReadAsStringAsync().Result;
+            
+            TestCaseSuiteResult expectedResult =
+                JsonConvert.DeserializeObject<TestCaseSuiteResult>(testResults.Result.Content.ReadAsStringAsync().Result);
+            Assert.That(testResults.Result.Content.ReadAsStringAsync().Result, Is.EqualTo(JsonConvert.SerializeObject(testCaseSuiteResult)));
+
         }
     }
 
