@@ -214,14 +214,14 @@ namespace OrderJobs.Test
             var httpClient = new HttpClient();
             var deleteResponse = httpClient.DeleteAsync("http://localhost:55163/api/test/all");
             deleteResponse.Wait();
-            var sampleTestCase = new SampleTestCase {TestCase = "a-|b-"};
-            var testCaseJson = JsonConvert.SerializeObject(sampleTestCase);
-            var content = new StringContent(testCaseJson, Encoding.UTF8, "application/json");
-            var response = httpClient.PostAsync("http://localhost:55163/api/test", content);
-            response.Wait();
-            Task<HttpResponseMessage> testResults = httpClient.GetAsync("http://localhost:55163/api/test?url=http://localhost:55163/api/values/");
-            testResults.Wait();
-            var testCaseSuiteResult = new TestCaseSuiteResult(new List<TestCasePermutationResults>
+            var testCaseJson = JsonConvert.SerializeObject(new SampleTestCase {TestCase = "a-|b-"});
+            var testCaseWithJsonHeaders = new StringContent(testCaseJson, Encoding.UTF8, "application/json");
+            var postResponse = httpClient.PostAsync("http://localhost:55163/api/test", testCaseWithJsonHeaders);
+            postResponse.Wait();
+            Task<HttpResponseMessage> testCaseResultsFromApi = httpClient.GetAsync("http://localhost:55163/api/test?url=http://localhost:55163/api/values/");
+            testCaseResultsFromApi.Wait();
+            var testCaseResultAsJson = testCaseResultsFromApi.Result.Content.ReadAsStringAsync().Result;
+            var expectedResult = new TestCaseSuiteResult(new List<TestCasePermutationResults>
             {
                 new TestCasePermutationResults("a-|b-",
                     new List<TestCaseValidation>
@@ -230,11 +230,8 @@ namespace OrderJobs.Test
                         new TestCaseValidation("b-|a-", true)
                     })
             });
-            var partialResult = testResults.Result.Content.ReadAsStringAsync().Result;
-            
-            TestCaseSuiteResult expectedResult =
-                JsonConvert.DeserializeObject<TestCaseSuiteResult>(testResults.Result.Content.ReadAsStringAsync().Result);
-            Assert.That(testResults.Result.Content.ReadAsStringAsync().Result, Is.EqualTo(JsonConvert.SerializeObject(testCaseSuiteResult)));
+            var expectedResultAsJson = JsonConvert.SerializeObject(expectedResult);
+            Assert.That(testCaseResultAsJson, Is.EqualTo(expectedResultAsJson));
 
         }
     }
@@ -285,7 +282,6 @@ namespace OrderJobs.Test
             testCasePermutations.Add(testCasePermutationResults);
             TestCaseSuiteResult testCaseSuiteResult = new TestCaseSuiteResult(testCasePermutations);
 
-            //Assert.That(testCaseValidations, Is.EqualTo(testCaseSuiteResult));
             Assert.That(testCaseValidations.results[0].results[0], Is.EqualTo(testCaseSuiteResult.results[0].results[0]));
             Assert.That(testCaseValidations.results[0].results[1], Is.EqualTo(testCaseSuiteResult.results[0].results[1]));
         }
