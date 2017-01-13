@@ -55,12 +55,9 @@ namespace OrderJobs.Algorithm
 
         private void CheckForJobDependingOnSelf()
         {
-            foreach (Job job in _jobs)
+            if (_jobs.Any(job => job.Name == job.Dependency))
             {
-                if (job.Name == job.Dependency)
-                {
-                    throw new SelfReferenceException();
-                }
+                throw new SelfReferenceException();
             }
         }
 
